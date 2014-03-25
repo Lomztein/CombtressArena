@@ -10,13 +10,16 @@ public class BulletScript : MonoBehaviour {
 	public float time;
 	public string damageType;
 	public LayerMask layer;
+	public bool modifySize;
 	SpriteRenderer sprite;
 	HealthScript healthScript;
 
 	void Start () {
 		sprite = transform.FindChild ("Sprite").GetComponent<SpriteRenderer>();
-		sprite.transform.localScale = new Vector3 (0.45f,velocity.magnitude * 2 * Time.fixedDeltaTime,1);
-		sprite.transform.localPosition += new Vector3(sprite.bounds.extents.x,0,0);
+		if (modifySize) {
+			sprite.transform.localScale = new Vector3 (0.45f,velocity.magnitude * 2 * Time.fixedDeltaTime,1);
+			sprite.transform.localPosition += new Vector3(sprite.bounds.extents.x,0,0);
+		}
 		time = range/velocity.magnitude;
 		Ray ray = new Ray(transform.position,velocity);
 		RaycastHit hit;

@@ -34,30 +34,31 @@ public class WeaponScript : MonoBehaviour {
 		Quaternion dq = Quaternion.identity;
 		if (parent.target) {
 			dq = Quaternion.Euler(new Vector3(0,0,parent.directionToTarget));
-			transform.rotation = Quaternion.RotateTowards(transform.rotation,dq,turnSpeed*Time.deltaTime);
 		}else{
 			dq = Quaternion.Euler(new Vector3(0,0,parent.direction));
-			transform.rotation = Quaternion.RotateTowards(transform.rotation,dq,turnSpeed*Time.deltaTime);
 		}
+		transform.rotation = Quaternion.RotateTowards(transform.rotation,dq,turnSpeed*Time.deltaTime);
 		if (turnSpeed == 0) {
 			transform.rotation = parent.transform.rotation;
 		}
 	}
 
 	public void Fire () {
-		if (reloaded == true) {
-			reloaded = false;
-			Invoke("Reload",reloadTime * parent.bFirerate);
-			for (int i=0;i<amount;i++) {
-				bullet = (GameObject)Instantiate(bulletType,muzzle.position,muzzle.rotation);
-				Vector3 force = (muzzle.right * bulletSpeed * parent.bBulletSpeed * (Random.Range (90f,110f)/100f));
-				force += (muzzle.up * (Random.Range (-inaccuracy,inaccuracy)));
-				BulletScript bs = bullet.GetComponent<BulletScript>();
-				bs.velocity = force;
-				bs.damage = damage * parent.bDamage;
-				bs.parentChar = parent;
-				bs.range = range * parent.bRange;
-				bs.layer = parent.enemyLayer;
+		if (Mathf.Abs (Mathf.DeltaAngle (parent.directionToTarget,transform.rotation.eulerAngles.z)) < 10) {
+			if (reloaded == true) {
+				reloaded = false;
+				Invoke("Reload",reloadTime * parent.bFirerate);
+				for (int i=0;i<amount;i++) {
+					bullet = (GameObject)Instantiate(bulletType,muzzle.position,muzzle.rotation);
+					Vector3 force = (muzzle.right * bulletSpeed * parent.bBulletSpeed * (Random.Range (90f,110f)/100f));
+					force += (muzzle.up * (Random.Range (-inaccuracy,inaccuracy)));
+					BulletScript bs = bullet.GetComponent<BulletScript>();
+					bs.velocity = force;
+					bs.damage = damage * parent.bDamage;
+					bs.parentChar = parent;
+					bs.range = range * parent.bRange;
+					bs.layer = parent.enemyLayer;
+				}
 			}
 		}
 	}

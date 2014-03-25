@@ -10,11 +10,20 @@ public class MapManager : MonoBehaviour {
 	public float fDistanceFromEnd;
 	public float fRange;
 
+	public bool startWithTurrets;
+	public GameObject turretType;
+	public int turretAmount;
+	public float tDistance;
+	public float tDistanceFromFortress;
+
 	public GameObject fortress;
 	public GameObject[] fortresses;
 
+	public GlobalManager manager;
+
 	// Use this for initialization
 	void Start () {
+		manager = GetComponent<GlobalManager>();
 		float fortressOffsetY = ((float)fortressAmount-1)*fDistance;
 		fortresses = new GameObject[fortressAmount*2];
 		for (int i=0;i<fortressAmount*2;i++) {
@@ -29,7 +38,33 @@ public class MapManager : MonoBehaviour {
 			}
 			GameObject nf = (GameObject)Instantiate(fortress,newPos,Quaternion.identity);
 			fortresses[i] = nf;
-			nf.GetComponent<Unit>().teamIndex = newTeam;
+			Unit newU = nf.GetComponent<Unit>();
+			newU.teamIndex = newTeam;
+		}
+		if (startWithTurrets) {
+			float turretOffsetY = ((float)turretAmount-1) * tDistance;
+			for (int i=0;i<turretAmount*2;i++) {
+				Vector3 newPos = Vector3.zero;
+				int newTeam = -1;
+				LayerMask freindlyMask = -1;
+				LayerMask enemyMask = -1;
+				if (i < turretAmount) {
+					newPos = new Vector3 (mapWidth-fDistanceFromEnd-tDistanceFromFortress,turretOffsetY - (i * tDistance*2),0);
+					freindlyMask = manager.team0Layer;
+					enemyMask = manager.team1Layer;
+					newTeam = 0;
+				}else{
+					newPos = new Vector3 (-mapWidth+(fDistanceFromEnd+tDistanceFromFortress),turretOffsetY - ((i-turretAmount) * tDistance*2),0);
+					freindlyMask = manager.team1Layer;
+					enemyMask = manager.team0Layer;
+					newTeam = 1;
+				}
+				GameObject nt = (GameObject)Instantiate(turretType,newPos,Quaternion.identity);
+				Unit newU = nt.GetComponent<Unit>();
+				newU.teamIndex = newTeam;
+				newU.freindlyLayer = freindlyMask;
+				newU.enemyLayer = enemyMask;
+			}
 		}
 	}
 	

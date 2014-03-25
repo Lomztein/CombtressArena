@@ -6,6 +6,8 @@ public class TargetFinder : MonoBehaviour {
 
 	public Unit unit;
 	public MapManager map;
+	public bool ignoreFortress;
+	public float maxHeight = 1;
 
 	// Use this for initialization
 	void Start () {
@@ -19,9 +21,12 @@ public class TargetFinder : MonoBehaviour {
 	void FixedUpdate () {
 		if (unit.target == null) {
 			FindTarget();
-		}
-		if (Physics.CheckSphere (transform.position,unit.weaponRange,unit.enemyLayer)) {
-			FindTarget();
+		}else{
+			if (unit.target.tag == "Fortress") {
+				if (Physics.CheckSphere (transform.position,unit.weaponRange,unit.enemyLayer)) {
+					FindTarget ();
+				}
+			}
 		}
 	}
 
@@ -35,7 +40,7 @@ public class TargetFinder : MonoBehaviour {
 				Unit otherU = other.GetComponent<Unit>();
 				float distance = Vector3.Distance (transform.position,other.transform.position);
 				if (otherU) {
-					if (distance < shortest && otherU.teamIndex != unit.teamIndex) {
+					if (distance < shortest && otherU.teamIndex != unit.teamIndex && otherU.height <= maxHeight) {
 						shortest = distance;
 						closest = other;
 					}
@@ -44,19 +49,23 @@ public class TargetFinder : MonoBehaviour {
 				}
 			}
 		}
-		if (closest == null) {
+		if (closest == null && ignoreFortress == false) {
 			for (int i=0;i<map.fortresses.Length;i++) {
-				GameObject other = map.fortresses[i];
-				Unit otherU = other.GetComponent<Unit>();
-				float distance = Vector3.Distance (transform.position,other.transform.position);
-				if (distance < shortest && otherU.teamIndex != unit.teamIndex) {
-					shortest = distance;
-					closest = other;
+				if (map.fortresses[i]) {
+					GameObject other = map.fortresses[i];
+					Unit otherU = other.GetComponent<Unit>();
+					float distance = Vector3.Distance (transform.position,other.transform.position);
+					if (distance < shortest && otherU.teamIndex != unit.teamIndex) {
+						shortest = distance;
+						closest = other;
+					}
 				}
 			}
 		}
-		unit.target = closest;
-		unit.targetUnit = closest.GetComponent<Unit>();
+		if (closest) {
+			unit.target = closest;
+			unit.targetUnit = closest.GetComponent<Unit>();
+		}
 	}
 
 	void OnDrawGizmos () {

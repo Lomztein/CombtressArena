@@ -29,7 +29,6 @@ public class GroundVehicleController : MonoBehaviour {
 			transform.rotation = Quaternion.RotateTowards(transform.rotation,dq,rot);
 
 			if (unit.distanceToTarget < unit.weaponRange) {
-				unit.weaponScript.Fire ();
 				if (speed > 0) {
 					speed -= maxSpeed * 5f * Time.deltaTime;
 				}else{

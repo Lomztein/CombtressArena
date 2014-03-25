@@ -1,12 +1,21 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\BombScript.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\GlobalManager.cs">
     <Files>
-      <File FileName="Assets\Scripts\BombScript.cs" Line="29" Column="4" />
-      <File FileName="Assets\Scripts\StrikejetController.cs" Line="43" Column="87" />
-      <File FileName="Assets\Scripts\BulletScript.cs" Line="36" Column="26" />
-      <File FileName="Assets\Scripts\Unit.cs" Line="62" Column="42" />
-      <File FileName="Assets\Scripts\WeaponScript.cs" Line="59" Column="34" />
+      <File FileName="Assets\Scripts\StrikejetController.cs" Line="63" Column="3" />
+      <File FileName="Assets\Scripts\AirstrikeBombScript.cs" Line="48" Column="70" />
+      <File FileName="Assets\Scripts\GroundVehicleController.cs" Line="31" Column="51" />
+      <File FileName="Assets\Scripts\Unit.cs" Line="66" Column="1" />
+      <File FileName="Assets\Scripts\WeaponScript.cs" Line="61" Column="6" />
+      <File FileName="Assets\Scripts\BulletScript.cs" Line="13" Column="24" />
+      <File FileName="Assets\Scripts\TargetFinder.cs" Line="26" Column="85" />
+      <File FileName="Assets\Scripts\TurretController.cs" Line="28" Column="3" />
+      <File FileName="Assets\Scripts\MapManager.cs" Line="66" Column="32" />
+      <File FileName="Assets\Scripts\ProducingStructure.cs" Line="38" Column="1" />
+      <File FileName="Assets\Scripts\CameraScript.cs" Line="13" Column="3" />
+      <File FileName="Assets\Scripts\PlayerController.cs" Line="41" Column="35" />
+      <File FileName="Assets\Scripts\GlobalManager.cs" Line="22" Column="4" />
+      <File FileName="Assets\Scripts\BotInput.cs" Line="16" Column="19" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

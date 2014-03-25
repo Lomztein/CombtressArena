@@ -46,7 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\BombScript.cs" />
+     <Compile Include="Assets\Scripts\AirstrikeBombScript.cs" />
      <Compile Include="Assets\Scripts\BotInput.cs" />
      <Compile Include="Assets\Scripts\BotManager.cs" />
      <Compile Include="Assets\Scripts\BulletScript.cs" />
@@ -65,6 +65,7 @@
      <Compile Include="Assets\Scripts\PurchaseableStructure.cs" />
      <Compile Include="Assets\Scripts\StrikejetController.cs" />
      <Compile Include="Assets\Scripts\TargetFinder.cs" />
+     <Compile Include="Assets\Scripts\TurretController.cs" />
      <Compile Include="Assets\Scripts\Unit.cs" />
      <Compile Include="Assets\Scripts\UnitManager.cs" />
      <Compile Include="Assets\Scripts\WeaponPickupScript.cs" />

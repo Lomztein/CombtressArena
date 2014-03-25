@@ -4,8 +4,8 @@ using System.Collections;
 public class BotInput : MonoBehaviour {
 
 	public GlobalManager manager;
-	public int playerIndex;
 	public string[] botNames;
+	public PlayerController input;
 
 	public GameObject optimalStructure;
 	public Vector2 optimalPosition;
@@ -13,6 +13,6 @@ public class BotInput : MonoBehaviour {
 	void Start () {
 		GameObject stats = GameObject.FindGameObjectWithTag("Stats");
 		manager = stats.GetComponent<GlobalManager>();
-		manager.playerNames[playerIndex] = botNames[Random.Range (0,botNames.Length)];
+		input.playerName = botNames[Random.Range (0,botNames.Length)];
 	}
 }

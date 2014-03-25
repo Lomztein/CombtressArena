@@ -10,13 +10,11 @@ public class GlobalManager : MonoBehaviour {
 
 	public int players;
 	public string[] teamNames;
-	public string[] playerNames;
 	public int[] credits;
 	
 	// Use this for initialization
 	void Start () {
 		teamNames = new string[2];
-		playerNames = new string[players];
 		credits = new int[players];
 		for (int i=0;i<purchaseables.Length;i++) {
 			buttons[i] = purchaseables[i].GetComponent<PurchaseButton>();

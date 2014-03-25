@@ -14,6 +14,7 @@ public class Unit : MonoBehaviour {
 	public int playerIndex;
 	public string teamName;
 
+	public float height;
 	public float direction;
 	public float directionToTarget;
 	public float distanceToTarget;
@@ -48,6 +49,7 @@ public class Unit : MonoBehaviour {
 	public GameObject levelUpParticle;
 	public GlobalManager manager;
 	public MapManager map;
+	public SpriteRenderer sprite;
 
 	// Use this for initialization
 	void Start () {
@@ -55,12 +57,16 @@ public class Unit : MonoBehaviour {
 		if (newWeapon) {
 			EquipWeapon();
 		}
+		transform.position += -transform.forward * height;
 		health = GetComponent<HealthScript>();
 		name = unitName + ", level " + level.ToString();
 		GameObject stats = GameObject.FindGameObjectWithTag("Stats");
 		manager = stats.GetComponent<GlobalManager>();
 		map = stats.GetComponent<MapManager>();
-		if (unitType == "structure") { transform.FindChild("Sprite").position += Vector3.forward/2; }
+		sprite = transform.FindChild("Sprite").GetComponent<SpriteRenderer>();
+		if (sprite) {
+			if (unitType == "structure") { sprite.transform.position += Vector3.forward/2; }
+		}
 		health.value = income * Mathf.RoundToInt (level * 0.25f);
 		GetLayers();
 	}
@@ -85,6 +91,7 @@ public class Unit : MonoBehaviour {
 		if (newWeapon) {
 			if (!weaponPos) {
 				weaponPos = new GameObject("WeaponPos").transform;
+				weaponPos.parent = transform;
 				weaponPos.position = transform.position;
 			}
 			Destroy (weapon);
