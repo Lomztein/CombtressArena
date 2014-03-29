@@ -34,10 +34,12 @@ public class BulletScript : MonoBehaviour {
 			range = rangeOverride;
 		}
 		time = range/velocity.magnitude;
-		if (Mathf.Round (transform.position.z) == Mathf.Round (target.position.z)) {
-			speedZ = 0;
-		}else{
-			speedZ = (transform.position.z - target.position.z) / Vector2.Distance (new Vector2(transform.position.x,transform.position.y),new Vector3(target.position.x,target.position.y));
+		if (target) {
+			if (Mathf.Round (transform.position.z) == Mathf.Round (target.position.z)) {
+				speedZ = 0;
+			}else{
+				speedZ = (transform.position.z - target.position.z) / Vector2.Distance (new Vector2(transform.position.x,transform.position.y),new Vector3(target.position.x,target.position.y));
+			}
 		}
 		Ray ray = new Ray(transform.position,velocity);
 		RaycastHit hit;
@@ -59,7 +61,6 @@ public class BulletScript : MonoBehaviour {
 		}
 		if (homing) {
 			if (target) {
-				transform.position += transform.right * speedX * Time.fixedDeltaTime;
 				Vector3 targetZ = new Vector3(transform.position.x,transform.position.y,target.position.z);
 				transform.position = Vector3.MoveTowards(transform.position,targetZ,speedZ);
 			}

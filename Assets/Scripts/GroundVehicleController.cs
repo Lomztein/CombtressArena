@@ -37,6 +37,7 @@ public class GroundVehicleController : MonoBehaviour {
 						speed = maxSpeed;
 					}
 				}else{
+					desiredRotation = new Vector3 (0,0,unit.direction);
 					if (speed > 0) {
 						speed -= maxSpeed * 5f * Time.deltaTime;
 					}else{
