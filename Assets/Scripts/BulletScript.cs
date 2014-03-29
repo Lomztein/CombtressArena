@@ -38,7 +38,10 @@ public class BulletScript : MonoBehaviour {
 			if (Mathf.Round (transform.position.z) == Mathf.Round (target.position.z)) {
 				speedZ = 0;
 			}else{
-				speedZ = (transform.position.z - target.position.z) / Vector2.Distance (new Vector2(transform.position.x,transform.position.y),new Vector3(target.position.x,target.position.y));
+				speedZ = (transform.position.z - target.position.z) / Vector2.Distance (new Vector2(transform.position.x,transform.position.y),new Vector2(target.position.x,target.position.y));
+				if (homing) {
+					speedZ = Mathf.Abs(speedZ);
+				}
 			}
 		}
 		Ray ray = new Ray(transform.position,velocity);
@@ -63,8 +66,9 @@ public class BulletScript : MonoBehaviour {
 			if (target) {
 				Vector3 targetZ = new Vector3(transform.position.x,transform.position.y,target.position.z);
 				transform.position = Vector3.MoveTowards(transform.position,targetZ,speedZ);
+			}else{
+				transform.position += transform.forward * speedZ * Time.fixedDeltaTime;
 			}
-			transform.position = Vector3.MoveTowards(transform.position,-transform.forward * speedZ,speedZ);
 			transform.position += transform.right * speedX * Time.fixedDeltaTime;
 		}else{
 			transform.position += -(transform.forward * speedZ);

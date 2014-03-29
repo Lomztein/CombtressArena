@@ -6,9 +6,13 @@ public class GlobalManager : MonoBehaviour {
 	public LayerMask team0Layer;
 	public LayerMask team1Layer;
 	public GameObject[] purchaseables;
+	public GameObject factory;
 	public PlayerController[] playerControllers;
 	public PlayerController localPlayer;
 	public Light sun;
+
+	public Texture2D buttonBackground;
+	Texture2D[] buttonSprites;
 
 	public int players;
 	public string[] teamNames;
@@ -23,6 +27,11 @@ public class GlobalManager : MonoBehaviour {
 	void Start () {
 		teamNames = new string[2];
 		credits = new int[players];
+		buttonSprites = new Texture2D[purchaseables.Length];
+
+		for (int i=0;i<purchaseables.Length;i++) {
+			buttonSprites[i] = purchaseables[i].transform.FindChild ("Sprite").GetComponent<SpriteRenderer>().sprite.texture;
+		}
 	}
 
 	void Update () {
@@ -36,9 +45,15 @@ public class GlobalManager : MonoBehaviour {
 			menuOffset = GUI.HorizontalSlider (new Rect(10,Screen.height-buttonSize-30,Screen.width-20,20),menuOffset,((-buttonSize - buttonDistance) * purchaseables.Length),0);
 		}
 		for (int i=0;i<purchaseables.Length;i++) {
-			if (GUI.Button (new Rect(menuOffset + 10 + i * (buttonSize + buttonDistance),Screen.height - buttonSize-10,buttonSize,buttonSize),purchaseables[i].name)) {
-				localPlayer.selectedPurchaseOption = purchaseables[i];
-				Debug.Log ("Bought a unit");
+			Unit newU = purchaseables[i].GetComponent<Unit>();
+			Rect rect = new Rect (menuOffset + 10 + i * (buttonSize + buttonDistance),Screen.height - buttonSize-10,buttonSize,buttonSize);
+			//GUI.Label (rect,buttonBackground);
+			if (GUI.Button (rect,buttonSprites[i])) {
+				Vector3 newPos = Vector3.zero;
+				GameObject newFactory = (GameObject)Instantiate(factory,newPos,Quaternion.identity);
+				ProducingStructure fac = newFactory.GetComponent<ProducingStructure>();
+				fac.unit = purchaseables[i];
+				fac.time = 10;
 			}
 		}
 	}
