@@ -23,7 +23,6 @@ public class AirstrikeBombScript : MonoBehaviour {
 			targetPos = transform.position + transform.right;
 		}
 		time = range/speed;
-		Debug.Log(transform.position.z + ", " + targetPos.z);
 		if (Mathf.Round (transform.position.z) == Mathf.Round (targetPos.z)) {
 			fallSpeed = 0;
 		}else{

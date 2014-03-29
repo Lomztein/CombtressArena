@@ -7,6 +7,9 @@ public class GlobalManager : MonoBehaviour {
 	public LayerMask team1Layer;
 	public GameObject[] purchaseables;
 	public PurchaseButton[] buttons;
+	public PlayerController[] playerControllers;
+	public PlayerController localPlayer;
+	public Light sun;
 
 	public int players;
 	public string[] teamNames;
@@ -16,15 +19,17 @@ public class GlobalManager : MonoBehaviour {
 	void Start () {
 		teamNames = new string[2];
 		credits = new int[players];
-		for (int i=0;i<purchaseables.Length;i++) {
-			buttons[i] = purchaseables[i].GetComponent<PurchaseButton>();
-		}
+	}
+
+	void Update () {
+		sun.intensity = Mathf.Sin (Time.time/240)/5+0.3f;
 	}
 
 	void OnGUI () {
 		for (int i=0;i<buttons.Length;i++) {
 			if (GUI.Button (new Rect(10 + i * 30,Screen.height - 30,20,20),buttons[i].purchaseButton)) {
-				Debug.Log ("Bought a unit!");
+				localPlayer.selectedPurchaseOption = purchaseables[i];
+				Debug.Log ("Bought a unit");
 			}
 		}
 	}

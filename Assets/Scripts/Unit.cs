@@ -34,6 +34,7 @@ public class Unit : MonoBehaviour {
 	public GameObject target;
 	public Unit targetUnit;
 	public Vector3 targetPos;
+	public Vector3 targetVel;
 	
 	public float bulletSpeed;
 	public float bDamage = 1;
@@ -57,14 +58,18 @@ public class Unit : MonoBehaviour {
 		if (newWeapon) {
 			EquipWeapon();
 		}
+		if (newWeapon) {
+			EquipWeapon ();
+		}
 		transform.position += -transform.forward * height;
 		health = GetComponent<HealthScript>();
 		name = unitName + ", level " + level.ToString();
 		GameObject stats = GameObject.FindGameObjectWithTag("Stats");
 		manager = stats.GetComponent<GlobalManager>();
 		map = stats.GetComponent<MapManager>();
-		sprite = transform.FindChild("Sprite").GetComponent<SpriteRenderer>();
-		if (sprite) {
+		Transform sp = transform.FindChild("Sprite");
+		if (sp) {
+			sprite = sp.gameObject.GetComponent<SpriteRenderer>();
 			if (unitType == "structure") { sprite.transform.position += Vector3.forward/2; }
 		}
 		health.value = income * Mathf.RoundToInt (level * 0.25f);
@@ -100,6 +105,7 @@ public class Unit : MonoBehaviour {
 			weaponScript = weapon.GetComponent<WeaponScript>();
 			weaponScript.parent = this;
 			newWeapon = null;
+			bulletSpeed = weaponScript.bulletSpeed * bBulletSpeed;
 		}
 	}
 
@@ -133,8 +139,8 @@ public class Unit : MonoBehaviour {
 			EquipWeapon ();
 		}
 		if (target) {
-			//targetPos = CalculateFuturePosition (target.transform.position,targetUnit.velocity,bulletSpeed);
-			targetPos = target.transform.position;
+			targetVel = targetUnit.velocity;
+			targetPos = CalculateFuturePosition (target.transform.position,targetVel,bulletSpeed);
 			directionToTarget = Mathf.Atan2(targetPos.y-transform.position.y, targetPos.x-transform.position.x)*180 / Mathf.PI;
 			distanceToTarget = Vector3.Distance(transform.position,target.transform.position);
 		}
@@ -142,16 +148,19 @@ public class Unit : MonoBehaviour {
 			weaponRange = weaponScript.range * bRange;
 		}
 		direction = transform.rotation.eulerAngles.z;
-		velocity = -(prevPos - transform.position)/Time.deltaTime;
+	}
+
+	void FixedUpdate () {
+		velocity = -(prevPos - transform.position)/Time.fixedDeltaTime;
 		prevPos = transform.position;
 	}
+
 	public void Fire () {
 		weaponScript.Fire();
 	}
 
 	Vector3 CalculateFuturePosition (Vector3 spos, Vector3 vel, float speed) {
-		float distance = Vector3.Distance (transform.position,spos);
-		float time = distance/speed;
+		float time = distanceToTarget/speed;
 		return spos + vel * time;
 	}
 

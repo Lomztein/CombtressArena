@@ -13,16 +13,18 @@ public class WeaponScript : MonoBehaviour {
 	public Unit parent;
 	public float range;
 	public float turnSpeed;
-	public Transform muzzle;
+	public Transform[] muzzles;
+	public int muzzleIndex;
 	GameObject bullet;
 
 	void Start () {
 		parent.bulletSpeed = bulletSpeed;
-		if (!muzzle) {
-			muzzle = new GameObject("Muzzle").transform;
-			muzzle.position = transform.position;
-			muzzle.rotation = transform.rotation;
-			muzzle.parent = transform;
+		if (muzzles.Length == 0) {
+			muzzles = new Transform[1];
+			muzzles[0] = new GameObject("Muzzle").transform;
+			muzzles[0].position = transform.position;
+			muzzles[0].rotation = transform.rotation;
+			muzzles[0].parent = transform;
 		}
 		Transform sprite = transform.FindChild ("Sprite");
 		if (sprite) {
@@ -43,24 +45,30 @@ public class WeaponScript : MonoBehaviour {
 		}
 	}
 
-	public void Fire () {
+	public bool Fire () {
+		bool hasFired = false;
 		if (Mathf.Abs (Mathf.DeltaAngle (parent.directionToTarget,transform.rotation.eulerAngles.z)) < 10) {
 			if (reloaded == true) {
 				reloaded = false;
 				Invoke("Reload",reloadTime * parent.bFirerate);
 				for (int i=0;i<amount;i++) {
-					bullet = (GameObject)Instantiate(bulletType,muzzle.position,muzzle.rotation);
-					Vector3 force = (muzzle.right * bulletSpeed * parent.bBulletSpeed * (Random.Range (90f,110f)/100f));
-					force += (muzzle.up * (Random.Range (-inaccuracy,inaccuracy)));
+					bullet = (GameObject)Instantiate(bulletType,muzzles[muzzleIndex].position,muzzles[muzzleIndex].rotation);
+					Vector3 force = (muzzles[muzzleIndex].right * bulletSpeed * parent.bBulletSpeed * (Random.Range (90f,110f)/100f));
+					force += (muzzles[muzzleIndex].up * (Random.Range (-inaccuracy,inaccuracy)));
 					BulletScript bs = bullet.GetComponent<BulletScript>();
+					hasFired = true;
+					muzzleIndex++;
+					muzzleIndex = muzzleIndex % muzzles.Length;
 					bs.velocity = force;
 					bs.damage = damage * parent.bDamage;
 					bs.parentChar = parent;
 					bs.range = range * parent.bRange;
 					bs.layer = parent.enemyLayer;
+					bs.target = parent.target.transform;
 				}
 			}
 		}
+		return hasFired;
 	}
 
 	void Reload () {

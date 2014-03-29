@@ -11,6 +11,13 @@ public class BulletScript : MonoBehaviour {
 	public string damageType;
 	public LayerMask layer;
 	public bool modifySize;
+	public bool homing;
+	public bool piercing;
+	public float speedZ;
+	public float turnSpeed;
+	public Transform target;
+	public float rangeOverride;
+	float speedX;
 	SpriteRenderer sprite;
 	HealthScript healthScript;
 
@@ -20,7 +27,18 @@ public class BulletScript : MonoBehaviour {
 			sprite.transform.localScale = new Vector3 (0.45f,velocity.magnitude * 2 * Time.fixedDeltaTime,1);
 			sprite.transform.localPosition += new Vector3(sprite.bounds.extents.x,0,0);
 		}
+		if (homing) {
+			speedX = velocity.magnitude;
+		}
+		if (Mathf.RoundToInt (rangeOverride) != 0) {
+			range = rangeOverride;
+		}
 		time = range/velocity.magnitude;
+		if (Mathf.Round (transform.position.z) == Mathf.Round (target.position.z)) {
+			speedZ = 0;
+		}else{
+			speedZ = (transform.position.z - target.position.z) / Vector2.Distance (new Vector2(transform.position.x,transform.position.y),new Vector3(target.position.x,target.position.y));
+		}
 		Ray ray = new Ray(transform.position,velocity);
 		RaycastHit hit;
 		if (Physics.Raycast (ray, out hit, velocity.magnitude * Time.fixedDeltaTime)) {
@@ -31,10 +49,29 @@ public class BulletScript : MonoBehaviour {
 	void FixedUpdate () {
 		Ray ray = new Ray(transform.position,velocity);
 		RaycastHit hit;
+		if (homing) {
+			ray = new Ray(transform.position,transform.right + (-transform.forward * speedZ));
+			if (target) {
+				float angle = Mathf.Atan2(target.position.y-transform.position.y, target.position.x-transform.position.x)*180 / Mathf.PI;
+				Quaternion newDir = Quaternion.Euler(0f,0f,angle);
+				transform.rotation = Quaternion.RotateTowards (transform.rotation,newDir,turnSpeed * Time.fixedDeltaTime);
+			}
+		}
+		if (homing) {
+			if (target) {
+				transform.position += transform.right * speedX * Time.fixedDeltaTime;
+				Vector3 targetZ = new Vector3(transform.position.x,transform.position.y,target.position.z);
+				transform.position = Vector3.MoveTowards(transform.position,targetZ,speedZ);
+			}
+			transform.position = Vector3.MoveTowards(transform.position,-transform.forward * speedZ,speedZ);
+			transform.position += transform.right * speedX * Time.fixedDeltaTime;
+		}else{
+			transform.position += -(transform.forward * speedZ);
+			transform.position += velocity * Time.fixedDeltaTime;
+		}
 		if (Physics.Raycast (ray, out hit, velocity.magnitude * Time.fixedDeltaTime,layer)) {
 			Hit(hit.collider);
 		}
-		transform.position += (velocity * Time.fixedDeltaTime);
 		if (time > 0) {
 			time -= Time.fixedDeltaTime;
 		}else{
@@ -45,7 +82,7 @@ public class BulletScript : MonoBehaviour {
 	void Hit (Collider other) {
 		healthScript = other.gameObject.GetComponent<HealthScript>();
 		if (healthScript) {
-			Destroy(gameObject);
+			if (piercing == false) { Destroy(gameObject); }
 			if (healthScript.armorType == damageType) {
 				healthScript.health -= damage;
 				parentChar.experience += damage/5;
@@ -55,9 +92,5 @@ public class BulletScript : MonoBehaviour {
 			}
 			healthScript.lastHit = parentChar;
 		}
-	}
-
-	void OnDrawGizmos () {
-		Gizmos.DrawLine (transform.position, transform.position + velocity * Time.fixedDeltaTime);
 	}
 }

@@ -28,6 +28,9 @@ public class TargetFinder : MonoBehaviour {
 				}
 			}
 		}
+		if (unit.distanceToTarget > unit.weaponRange) {
+			FindTarget ();
+		}
 	}
 
 	public void FindTarget () {

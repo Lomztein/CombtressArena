@@ -9,12 +9,6 @@ public class StrikejetController : MonoBehaviour {
 	public float speed;
 	public float maxSpeed;
 	public float rotateSpeed;
-	public float range;
-	public GameObject bomb;
-	public float reloadTime;
-	public bool reloaded;
-	public Transform[] muzzles;
-	public int muzzleIndex;
 	public Unit unit;
 
 	// Use this for initialization
@@ -44,19 +38,12 @@ public class StrikejetController : MonoBehaviour {
 			}
 			transform.position += (transform.right * speed * Time.deltaTime);
 			transform.rotation = Quaternion.RotateTowards(transform.rotation,newDir,rotateSpeed * Time.deltaTime);
-			if (unit.distanceToTarget < range) {
-				if (reloaded == true && (rounds > 0 || infiniteRounds)) {
-					reloaded = false;
-					Invoke("Reload",reloadTime);
-					rounds--;
-					GameObject newBomb = (GameObject)Instantiate(bomb,muzzles[muzzleIndex].position,muzzles[muzzleIndex].rotation);
-					muzzleIndex++;
-					muzzleIndex = muzzleIndex % muzzles.Length;
-					AirstrikeBombScript sbomb = newBomb.GetComponent<AirstrikeBombScript>();
-					sbomb.target = unit.target.transform;
-					sbomb.layer = unit.enemyLayer;
-					sbomb.parentChar = unit;
-					sbomb.range = unit.weaponRange/2;
+
+			if (unit.distanceToTarget < unit.weaponRange) {
+				if (unit.weaponScript.reloaded == true && (rounds > 0 || infiniteRounds)) {
+					if (unit.weaponScript.Fire ()) {
+						rounds--;
+					}
 				}
 			}
 		}
@@ -64,9 +51,5 @@ public class StrikejetController : MonoBehaviour {
 		if (unit.sprite.isVisible == false && rounds <= 0 && infiniteRounds == false) {
 			Destroy (gameObject);
 		}
-	}
-
-	void Reload () {
-		reloaded = true;
 	}
 }
