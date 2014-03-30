@@ -17,6 +17,7 @@ public class BulletScript : MonoBehaviour {
 	public float turnSpeed;
 	public Transform target;
 	public float rangeOverride;
+	public GameObject hitParticle;
 	float speedX;
 	SpriteRenderer sprite;
 	HealthScript healthScript;
@@ -85,6 +86,9 @@ public class BulletScript : MonoBehaviour {
 	}
 
 	void Hit (Collider other) {
+		if (hitParticle) {
+			Instantiate(hitParticle,transform.position+transform.forward * -2,transform.rotation);
+		}
 		healthScript = other.gameObject.GetComponent<HealthScript>();
 		if (healthScript) {
 			if (piercing == false) { Destroy(gameObject); }

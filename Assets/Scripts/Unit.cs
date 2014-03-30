@@ -41,7 +41,9 @@ public class Unit : MonoBehaviour {
 	public float bRange = 1;
 	public float bFirerate = 1;
 	public float bBulletSpeed = 1;
+
 	public int income;
+	public int cost;
 
 	public float experience;
 	public float expNeeded;
@@ -112,12 +114,12 @@ public class Unit : MonoBehaviour {
 	void LevelUp () {
 		float excess = experience - expNeeded;
 		experience = excess;
-		health.maxHealth = health.maxHealth * 1.25f;
+		health.maxHealth = health.maxHealth * 1.05f;
 		health.health = health.maxHealth;
 		if (weapon) {
-			bDamage = bDamage * 1.25f;
-			bRange = bRange * 1.25f;
-			bBulletSpeed = bBulletSpeed * 1.10f;
+			bDamage = bDamage * 1.05f;
+			bRange = bRange * 1.05f;
+			bBulletSpeed = bBulletSpeed * 1.01f;
 			bulletSpeed = weaponScript.bulletSpeed * bBulletSpeed;
 		}
 		level++;

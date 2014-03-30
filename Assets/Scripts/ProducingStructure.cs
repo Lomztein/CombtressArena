@@ -14,7 +14,6 @@ public class ProducingStructure : MonoBehaviour {
 	void Start () {
 		InvokeRepeating("CreateUnit",time,time);
 		u = GetComponent<Unit>();
-		income = u.income;
 	}
 
 	void Update () {

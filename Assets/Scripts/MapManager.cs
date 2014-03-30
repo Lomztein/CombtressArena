@@ -24,6 +24,9 @@ public class MapManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		manager = GetComponent<GlobalManager>();
+	}
+
+	public void GenerateMap () {
 		float fortressOffsetY = ((float)fortressAmount-1)*fDistance;
 		fortresses = new GameObject[fortressAmount*2];
 		for (int i=0;i<fortressAmount*2;i++) {
