@@ -35,6 +35,8 @@ public class GlobalManager : MonoBehaviour {
 	public int[] credits;
 	public GameObject player;
 	public string[] botNames;
+	public string[] botTypes;
+	public string botTypeOverride;
 	public int startingCredits;
 
 	public float buttonSize;
@@ -49,12 +51,16 @@ public class GlobalManager : MonoBehaviour {
 	public int particleAmount;
 	public int maxParticles;
 
+	public int maxPopulation;
+	public int[] populations;
+
 	// Use this for initialization
 	void Start () {
 		map = GetComponent<MapManager>();
 		map.GenerateMap();
 		teamNames = new string[2];
 		credits = new int[players];
+		populations = new int[players];
 		playerControllers = new PlayerController[players];
 
 		for (int i=0;i<players;i++) {
@@ -212,16 +218,16 @@ public class GlobalManager : MonoBehaviour {
 			if ((buttonSize + buttonDistance) * purchaseables.Length + 20 > Screen.width) {
 				menuOffset = (int)GUI.HorizontalSlider (new Rect(10,Screen.height-buttonSize-30,Screen.width-20,20),menuOffset,(Mathf.RoundToInt(-buttonSize - buttonDistance) * activeButtons.Length),0);
 			}
-			if (GUI.Button (new Rect(10,Screen.height - buttonSize - 55,buttonSize*2,buttonSize/2),"infantry")) {
+			if (GUI.Button (new Rect(10,Screen.height - buttonSize - 55,buttonSize*2,buttonSize/2),"INFANTRY")) {
 				UpdateMenu (infantry,infButtons);
 			}
-			if (GUI.Button (new Rect(10+buttonSize*2+buttonDistance,Screen.height - buttonSize - 55,buttonSize*2,buttonSize/2),"vehiles")) {
+			if (GUI.Button (new Rect(10+buttonSize*2+buttonDistance,Screen.height - buttonSize - 55,buttonSize*2,buttonSize/2),"VEHICLES")) {
 				UpdateMenu (vehicles,vehButtons);
 			}
-			if (GUI.Button (new Rect(10+(buttonSize*2+buttonDistance)*2,Screen.height - buttonSize - 55,buttonSize*2,buttonSize/2),"turrets")) {
+			if (GUI.Button (new Rect(10+(buttonSize*2+buttonDistance)*2,Screen.height - buttonSize - 55,buttonSize*2,buttonSize/2),"TURRETS")) {
 				UpdateMenu (turrets,turButtons);
 			}
-			if (GUI.Button (new Rect(10+(buttonSize*2+buttonDistance)*3,Screen.height - buttonSize - 55,buttonSize*2,buttonSize/2),"structures")) {
+			if (GUI.Button (new Rect(10+(buttonSize*2+buttonDistance)*3,Screen.height - buttonSize - 55,buttonSize*2,buttonSize/2),"STRUCTURES")) {
 				UpdateMenu (structures,strButtons);
 			}
 			for (int i=0;i<activeButtons.Length;i++) {

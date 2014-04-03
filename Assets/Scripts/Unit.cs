@@ -75,6 +75,13 @@ public class Unit : MonoBehaviour {
 			sprite = sp.gameObject.GetComponent<SpriteRenderer>();
 			if (unitType == "structure") { sprite.transform.position += Vector3.forward/2; }
 		}
+		if (tag != "Fortress") {
+			if (teamIndex == 0) {
+				tag = "Team0";
+			}else{
+				tag = "Team1";
+			}
+		}
 		GetLayers();
 	}
 
@@ -163,6 +170,17 @@ public class Unit : MonoBehaviour {
 	Vector3 CalculateFuturePosition (Vector3 spos, Vector3 vel, float speed) {
 		float time = distanceToTarget/speed;
 		return spos + vel * time;
+	}
+
+	void OnDestroy () {
+		if (unitType == "structure") {
+			manager.playerControllers[playerIndex].population--;
+		}
+	}
+
+	public void Sell () {
+		manager.credits[playerIndex] += Mathf.RoundToInt((float)cost*0.75f);
+		Destroy (gameObject);
 	}
 
 	void OnDrawGizmos()  {

@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour {
 	public Transform nearestFortress;
 
 	public LayerMask freindlyLayer;
+	public int population;
 
 	// Use this for initialization
 	void Start () {
@@ -31,7 +32,12 @@ public class PlayerController : MonoBehaviour {
 		if (botControlled) {
 			bot = (BotInput)gameObject.AddComponent("BotInput");
 			bot.input = this;
-			playerName = manager.botNames[Random.Range (0,manager.botNames.Length)] + " (BOT)";
+			if (manager.botTypeOverride.Length == 0) {
+				bot.aiType = manager.botTypes[Random.Range (0,manager.botTypes.Length)];
+			}else{
+				bot.aiType = manager.botTypeOverride;
+			}
+			playerName = manager.botNames[Random.Range (0,manager.botNames.Length)] + " (" + bot.aiType.ToUpper() + " BOT)";
 		}
 		int fortressIndex = 0;
 		for (int i=0;i<map.fortressAmount*2;i++) {
@@ -57,6 +63,7 @@ public class PlayerController : MonoBehaviour {
 			}
 			nearestFortress = closest;
 		}
+		manager.populations[id] = population;
 	}
 	
 	void Update() {
@@ -73,55 +80,60 @@ public class PlayerController : MonoBehaviour {
 	public int PlacePurchase () {
 		int error = 0;
 		if (selectedPurchaseOption) {
-			if (!Physics.CheckSphere(focusPoint,1,freindlyLayer)) {
-				if (manager.IsInsideBattlefield (focusPoint)) {
-					Unit purchaseUnit = selectedPurchaseOption.GetComponent<Unit>();
-					int cost = purchaseUnit.cost;
-					if (manager.credits[id] >= cost) {
-						manager.credits[id] -= cost;
-						GameObject newPurchasePrefab;
-						if (purchaseUnit.unitType != "structure") {
-							newPurchasePrefab = manager.factory;
-						}else{
-							newPurchasePrefab = selectedPurchaseOption;
-						}
-						GameObject purchase = (GameObject)Instantiate(newPurchasePrefab,focusPoint,Quaternion.identity);
-						Unit newU = purchase.GetComponent<Unit>();
-						if (purchaseUnit.unitType != "structure") {
-							ProducingStructure pc = purchase.GetComponent<ProducingStructure>();
-							if (pc) {
-								pc.unit = selectedPurchaseOption;
-								pc.income = purchaseUnit.income;
+			if (population < manager.maxPopulation) {
+				if (!Physics.CheckSphere(focusPoint,1,freindlyLayer)) {
+					if (manager.IsInsideBattlefield (focusPoint)) {
+						Unit purchaseUnit = selectedPurchaseOption.GetComponent<Unit>();
+						int cost = purchaseUnit.cost;
+						if (manager.credits[id] >= cost) {
+							manager.credits[id] -= cost;
+							GameObject newPurchasePrefab;
+							if (purchaseUnit.unitType != "structure") {
+								newPurchasePrefab = manager.factory;
 							}else{
-								Debug.LogError ("No 'ProducingStructure' class was found on player " + id + "'s purchase.");
+								newPurchasePrefab = selectedPurchaseOption;
 							}
-						}
-						if (newU) {
-							newU.teamIndex = teamIndex;
-							newU.playerIndex = id;
-							newU.playerName = playerName;
-							newU.teamName = manager.teamNames[teamIndex];
-							if (teamIndex == 0) {
-								newU.freindlyLayer = manager.team0Layer;
-								newU.enemyLayer = manager.team1Layer;
+							GameObject purchase = (GameObject)Instantiate(newPurchasePrefab,focusPoint,Quaternion.identity);
+							population++;
+							Unit newU = purchase.GetComponent<Unit>();
+							if (purchaseUnit.unitType != "structure") {
+								ProducingStructure pc = purchase.GetComponent<ProducingStructure>();
+								if (pc) {
+									pc.unit = selectedPurchaseOption;
+									pc.income = purchaseUnit.income;
+								}else{
+									Debug.LogError ("No 'ProducingStructure' class was found on player " + id + "'s purchase.");
+								}
+							}
+							if (newU) {
+								newU.teamIndex = teamIndex;
+								newU.playerIndex = id;
+								newU.playerName = playerName;
+								newU.teamName = manager.teamNames[teamIndex];
+								if (teamIndex == 0) {
+									newU.freindlyLayer = manager.team0Layer;
+									newU.enemyLayer = manager.team1Layer;
+								}else{
+									newU.freindlyLayer = manager.team1Layer;
+									newU.enemyLayer = manager.team0Layer;
+								}
 							}else{
-								newU.freindlyLayer = manager.team1Layer;
-								newU.enemyLayer = manager.team0Layer;
+								Debug.LogError ("No 'Unit' class was found on player " + id + "'s purchase.");
 							}
 						}else{
-							Debug.LogError ("No 'Unit' class was found on player " + id + "'s purchase.");
+							error = 1;
 						}
 					}else{
-						error = 1;
+						error = 2;
 					}
 				}else{
-					error = 2;
+					error = 3;
 				}
 			}else{
-				error = 3;
+				error = 4;
 			}
 		}else{
-			error = 4;
+			error = 5;
 		}
 		return error;
 	}
