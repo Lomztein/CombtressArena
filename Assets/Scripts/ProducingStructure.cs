@@ -12,6 +12,20 @@ public class ProducingStructure : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		if (unit) {
+			HealthScript h = unit.GetComponent<HealthScript>();
+			if (h) {
+				if (h.armorType == "light") {
+					time = 20;
+				}
+				if (h.armorType == "medium") {
+					time = 30;
+				}
+				if (h.armorType == "heavy") {
+					time = 40;
+				}
+			}
+		}
 		InvokeRepeating("CreateUnit",time,time);
 		u = GetComponent<Unit>();
 	}

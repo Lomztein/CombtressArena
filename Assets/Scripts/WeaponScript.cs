@@ -58,11 +58,6 @@ public class WeaponScript : MonoBehaviour {
 		bs.range = range * parent.bRange;
 		bs.layer = parent.enemyLayer;
 		if (parent.target) { bs.target = parent.target.transform; }
-		muzzleIndex++;
-		if (muzzleIndex < muzzles.Length) {
-			Invoke ("FireSequence",fireSequence);
-		}
-		muzzleIndex = muzzleIndex % muzzles.Length;
 	}
 
 	public bool Fire () {
@@ -77,6 +72,11 @@ public class WeaponScript : MonoBehaviour {
 					FeedBulletData (bullet);
 					hasFired = true;
 				}
+				muzzleIndex++;
+				if (muzzleIndex < muzzles.Length) {
+					Invoke ("FireSequence",fireSequence);
+				}
+				muzzleIndex = muzzleIndex % muzzles.Length;
 			}
 		}
 		return hasFired;
@@ -88,6 +88,11 @@ public class WeaponScript : MonoBehaviour {
 			bullet = (GameObject)Instantiate(bulletType,muzzles[muzzleIndex].position,muzzles[muzzleIndex].rotation);
 			FeedBulletData (bullet);
 		}
+		muzzleIndex++;
+		if (muzzleIndex < muzzles.Length) {
+			Invoke ("FireSequence",fireSequence);
+		}
+		muzzleIndex = muzzleIndex % muzzles.Length;
 	}
 
 	void Reload () {

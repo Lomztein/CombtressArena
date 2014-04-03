@@ -47,8 +47,8 @@ public class BulletScript : MonoBehaviour {
 		}
 		Ray ray = new Ray(transform.position,velocity);
 		RaycastHit hit;
-		if (Physics.Raycast (ray, out hit, velocity.magnitude * Time.fixedDeltaTime)) {
-			Hit(hit.collider);
+		if (Physics.Raycast (ray, out hit, velocity.magnitude * Time.fixedDeltaTime,layer)) {
+			Hit(hit.collider,hit.point);
 		}
 	}
 
@@ -76,7 +76,7 @@ public class BulletScript : MonoBehaviour {
 			transform.position += velocity * Time.fixedDeltaTime;
 		}
 		if (Physics.Raycast (ray, out hit, velocity.magnitude * Time.fixedDeltaTime,layer)) {
-			Hit(hit.collider);
+			Hit(hit.collider,hit.point);
 		}
 		if (time > 0) {
 			time -= Time.fixedDeltaTime;
@@ -85,9 +85,9 @@ public class BulletScript : MonoBehaviour {
 		}
 	}
 
-	void Hit (Collider other) {
+	void Hit (Collider other, Vector3 pos) {
 		if (hitParticle) {
-			Instantiate(hitParticle,transform.position+transform.forward * -2,transform.rotation);
+			Instantiate(hitParticle,pos+transform.forward * -2,transform.rotation);
 		}
 		healthScript = other.gameObject.GetComponent<HealthScript>();
 		if (healthScript) {

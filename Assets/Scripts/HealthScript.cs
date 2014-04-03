@@ -15,6 +15,7 @@ public class HealthScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		value = GetComponent<Unit>().income*2;
 		if (maxHealth == 0) {
 			maxHealth = health;
 		}
@@ -25,7 +26,9 @@ public class HealthScript : MonoBehaviour {
 		if (health <= 0 && invincible == false) {
 			Destroy(gameObject);
 			if (lastHit) {
-				lastHit.manager.credits[lastHit.playerIndex] += value;
+				if (lastHit.playerIndex >= 0) {
+					lastHit.manager.credits[lastHit.playerIndex] += value;
+				}
 			}
 		}
 		if (health < regenMax) {

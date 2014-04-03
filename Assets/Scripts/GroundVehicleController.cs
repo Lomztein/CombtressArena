@@ -8,6 +8,7 @@ public class GroundVehicleController : MonoBehaviour {
 	public float maxSpeed;
 	public bool threaded;
 	public bool swarmer;
+	public bool alwaysTurnedTowardsTarget;
 	public Unit unit;
 
 	// Use this for initialization
@@ -37,7 +38,11 @@ public class GroundVehicleController : MonoBehaviour {
 						speed = maxSpeed;
 					}
 				}else{
-					desiredRotation = new Vector3 (0,0,unit.direction);
+					if (alwaysTurnedTowardsTarget == false) {
+						desiredRotation = new Vector3 (0,0,unit.direction);
+					}else{
+						desiredRotation = new Vector3 (0,0,unit.directionToTarget);
+					}
 					if (speed > 0) {
 						speed -= maxSpeed * 5f * Time.deltaTime;
 					}else{

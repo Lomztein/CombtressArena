@@ -44,6 +44,7 @@ public class Unit : MonoBehaviour {
 
 	public int income;
 	public int cost;
+	public int spawnAmount;
 
 	public float experience;
 	public float expNeeded;
@@ -74,7 +75,6 @@ public class Unit : MonoBehaviour {
 			sprite = sp.gameObject.GetComponent<SpriteRenderer>();
 			if (unitType == "structure") { sprite.transform.position += Vector3.forward/2; }
 		}
-		health.value = income * Mathf.RoundToInt (level * 0.25f);
 		GetLayers();
 	}
 
@@ -114,12 +114,12 @@ public class Unit : MonoBehaviour {
 	void LevelUp () {
 		float excess = experience - expNeeded;
 		experience = excess;
-		health.maxHealth = health.maxHealth * 1.05f;
+		health.maxHealth = health.maxHealth * 1.01f;
 		health.health = health.maxHealth;
 		if (weapon) {
-			bDamage = bDamage * 1.05f;
-			bRange = bRange * 1.05f;
-			bBulletSpeed = bBulletSpeed * 1.01f;
+			bDamage = bDamage * 1.01f;
+			bRange = bRange * 1.01f;
+			bBulletSpeed = bBulletSpeed * 1.005f;
 			bulletSpeed = weaponScript.bulletSpeed * bBulletSpeed;
 		}
 		level++;
@@ -127,7 +127,6 @@ public class Unit : MonoBehaviour {
 		if (levelUpParticle) {
 			Instantiate(levelUpParticle,transform.position,Quaternion.identity);
 		}
-		health.value = income * Mathf.RoundToInt (level * 0.25f);
 		expNeeded = level * level * 25;
 	}
 	
@@ -143,7 +142,7 @@ public class Unit : MonoBehaviour {
 		if (target) {
 			targetVel = targetUnit.velocity;
 			targetPos = CalculateFuturePosition (target.transform.position,targetVel,bulletSpeed);
-			directionToTarget = Mathf.Atan2(targetPos.y-transform.position.y, targetPos.x-transform.position.x)*180 / Mathf.PI;
+			directionToTarget = Mathf.Atan2(targetPos.y-weaponPos.position.y, targetPos.x-weaponPos.position.x)*180 / Mathf.PI;
 			distanceToTarget = Vector3.Distance(transform.position,target.transform.position);
 		}
 		if (weapon) {

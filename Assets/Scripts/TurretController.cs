@@ -9,7 +9,7 @@ public class TurretController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		stand = transform.FindChild ("Stand");
+		stand = transform.FindChild ("Sprite");
 		unit = GetComponent<Unit>();
 		if (unit.teamIndex == 0) {
 			transform.rotation = Quaternion.Euler (0f,0f,180f);

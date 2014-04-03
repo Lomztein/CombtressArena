@@ -16,17 +16,29 @@ public class BotInput : MonoBehaviour {
 		if (Random.Range (0,100) == 1) {
 			GameObject newUnit = manager.purchaseables[Random.Range (0,manager.purchaseables.Length)];
 			input.selectedPurchaseOption = newUnit;
-			input.focusPoint = input.freindlyFortresses[Random.Range (0,input.freindlyFortresses.Length)].transform.position;
-			placing = true;
+			GameObject newF = input.freindlyFortresses[Random.Range (0,input.freindlyFortresses.Length)];
+			if (newF) {
+				input.focusPoint = newF.transform.position;
+				placing = true;
+			}
 		}
 		if (placing) {
-			if (input.PlacePurchase() == false) {
-				input.focusPoint += manager.nearbyVectors[Random.Range (0,manager.nearbyVectors.Length)];
-				if (input.PlacePurchase ()) {
-					placing = false;
-				}
-			}else{
+			int value = input.PlacePurchase();
+			if (value == 0) {
 				placing = false;
+			}
+			if (value == 1) {
+				GameObject newUnit = manager.purchaseables[Random.Range (0,manager.purchaseables.Length)];
+				input.selectedPurchaseOption = newUnit;
+			}
+			if (value == 2) {
+				GameObject newF = input.freindlyFortresses[Random.Range (0,input.freindlyFortresses.Length)];
+				if (newF) {
+					input.focusPoint = newF.transform.position;
+				}
+			}
+			if (value == 3) {
+				input.focusPoint += manager.nearbyVectors[Random.Range (0,manager.nearbyVectors.Length)];
 			}
 		}
 	}

@@ -64,6 +64,7 @@ public class MapManager : MonoBehaviour {
 				}
 				GameObject nt = (GameObject)Instantiate(turretType,newPos,Quaternion.identity);
 				Unit newU = nt.GetComponent<Unit>();
+				newU.playerIndex = -1;
 				newU.teamIndex = newTeam;
 				newU.freindlyLayer = freindlyMask;
 				newU.enemyLayer = enemyMask;

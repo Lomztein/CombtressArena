@@ -63,51 +63,67 @@ public class PlayerController : MonoBehaviour {
 		if (botControlled == false) {
 			pointer.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) + Vector3.forward;
 			focusPoint = new Vector3(pointer.position.x,pointer.position.y,0);
-			if (Input.GetButtonDown ("Fire1")) {
+			if (Input.GetButtonDown ("Fire1") && manager.tooltip.Length == 0) {
 				PlacePurchase();
 			}
 		}
 	}
 
 	// Update is called once per frame
-	public bool PlacePurchase () {
-		bool placed = false;
+	public int PlacePurchase () {
+		int error = 0;
 		if (selectedPurchaseOption) {
 			if (!Physics.CheckSphere(focusPoint,1,freindlyLayer)) {
-				Unit purchaseUnit = selectedPurchaseOption.GetComponent<Unit>();
-				int cost = purchaseUnit.cost;
-				placed = true;
-				if (manager.credits[id] >= cost) {
-					manager.credits[id] -= cost;
-					GameObject purchase = (GameObject)Instantiate(manager.factory,focusPoint,Quaternion.identity);
-					Unit newU = purchase.GetComponent<Unit>();
-					ProducingStructure pc = purchase.GetComponent<ProducingStructure>();
-					if (pc) {
-						pc.time = 10;
-						pc.unit = selectedPurchaseOption;
-						pc.income = purchaseUnit.income;
-					}else{
-						Debug.LogError ("No 'ProducingStructure' class was found on player " + id + "'s purchase.");
-					}
-					if (newU) {
-						newU.teamIndex = teamIndex;
-						newU.playerIndex = id;
-						newU.playerName = playerName;
-						newU.teamName = manager.teamNames[teamIndex];
-						if (teamIndex == 0) {
-							newU.freindlyLayer = manager.team0Layer;
-							newU.enemyLayer = manager.team1Layer;
+				if (manager.IsInsideBattlefield (focusPoint)) {
+					Unit purchaseUnit = selectedPurchaseOption.GetComponent<Unit>();
+					int cost = purchaseUnit.cost;
+					if (manager.credits[id] >= cost) {
+						manager.credits[id] -= cost;
+						GameObject newPurchasePrefab;
+						if (purchaseUnit.unitType != "structure") {
+							newPurchasePrefab = manager.factory;
 						}else{
-							newU.freindlyLayer = manager.team1Layer;
-							newU.enemyLayer = manager.team0Layer;
+							newPurchasePrefab = selectedPurchaseOption;
+						}
+						GameObject purchase = (GameObject)Instantiate(newPurchasePrefab,focusPoint,Quaternion.identity);
+						Unit newU = purchase.GetComponent<Unit>();
+						if (purchaseUnit.unitType != "structure") {
+							ProducingStructure pc = purchase.GetComponent<ProducingStructure>();
+							if (pc) {
+								pc.unit = selectedPurchaseOption;
+								pc.income = purchaseUnit.income;
+							}else{
+								Debug.LogError ("No 'ProducingStructure' class was found on player " + id + "'s purchase.");
+							}
+						}
+						if (newU) {
+							newU.teamIndex = teamIndex;
+							newU.playerIndex = id;
+							newU.playerName = playerName;
+							newU.teamName = manager.teamNames[teamIndex];
+							if (teamIndex == 0) {
+								newU.freindlyLayer = manager.team0Layer;
+								newU.enemyLayer = manager.team1Layer;
+							}else{
+								newU.freindlyLayer = manager.team1Layer;
+								newU.enemyLayer = manager.team0Layer;
+							}
+						}else{
+							Debug.LogError ("No 'Unit' class was found on player " + id + "'s purchase.");
 						}
 					}else{
-						Debug.LogError ("No 'Unit' class was found on player " + id + "'s purchase.");
+						error = 1;
 					}
+				}else{
+					error = 2;
 				}
+			}else{
+				error = 3;
 			}
+		}else{
+			error = 4;
 		}
-		return placed;
+		return error;
 	}
 
 	void OnDrawGizmos () {

@@ -19,7 +19,7 @@ public class TargetFinder : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		if (unit.target == null) {
+		if (!unit.target) {
 			FindTarget();
 		}else{
 			if (unit.target.tag == "Fortress") {
