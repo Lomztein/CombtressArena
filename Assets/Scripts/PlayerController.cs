@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour {
 	public Vector3 focusPoint;
 	public Transform pointer;
 	public GameObject selectedPurchaseOption;
+	public Vector3 mousePos;
 	public GlobalManager manager;
 	public MapManager map;
 
@@ -29,16 +30,6 @@ public class PlayerController : MonoBehaviour {
 		map = manager.GetComponent<MapManager>();
 		pointer = GameObject.Find ("Pointer").transform;
 		freindlyFortresses = new GameObject[map.fortressAmount];
-		if (botControlled) {
-			bot = (BotInput)gameObject.AddComponent("BotInput");
-			bot.input = this;
-			if (manager.botTypeOverride.Length == 0) {
-				bot.aiType = manager.botTypes[Random.Range (0,manager.botTypes.Length)];
-			}else{
-				bot.aiType = manager.botTypeOverride;
-			}
-			playerName = manager.botNames[Random.Range (0,manager.botNames.Length)] + " (" + bot.aiType.ToUpper() + " BOT)";
-		}
 		int fortressIndex = 0;
 		for (int i=0;i<map.fortressAmount*2;i++) {
 			Unit fu = map.fortresses[i].GetComponent<Unit>();
@@ -52,18 +43,23 @@ public class PlayerController : MonoBehaviour {
 
 	void FixedUpdate () {
 		if (local) {
-			Transform closest = freindlyFortresses[0].transform;
-			float distance = float.MaxValue;
-			for (int i=0;i<freindlyFortresses.Length;i++) {
+			GetNearestFortress();
+		}
+		manager.populations[id] = population;
+	}
+	void GetNearestFortress () {
+		Transform closest = null;
+		float distance = float.MaxValue;
+		for (int i=0;i<freindlyFortresses.Length;i++) {
+			if (freindlyFortresses[i]) {
 				float cd = Vector3.Distance (focusPoint,freindlyFortresses[i].transform.position);
 				if (cd < distance) {
 					closest = freindlyFortresses[i].transform;
 					distance = cd;
 				}
 			}
-			nearestFortress = closest;
 		}
-		manager.populations[id] = population;
+		nearestFortress = closest;
 	}
 	
 	void Update() {
@@ -74,15 +70,18 @@ public class PlayerController : MonoBehaviour {
 				PlacePurchase();
 			}
 		}
+		Vector3 mp = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+		mousePos = new Vector3 (mp.x,mp.y,0);
 	}
 
 	// Update is called once per frame
 	public int PlacePurchase () {
 		int error = 0;
+		GetNearestFortress();
 		if (selectedPurchaseOption) {
 			if (population < manager.maxPopulation) {
-				if (!Physics.CheckSphere(focusPoint,1,freindlyLayer)) {
-					if (manager.IsInsideBattlefield (focusPoint)) {
+				if (!Physics.CheckSphere(focusPoint,1,freindlyLayer) && nearestFortress) {
+					if (manager.IsInsideBattlefield (focusPoint) && Vector3.Distance (mousePos,nearestFortress.position) < map.fRange) {
 						Unit purchaseUnit = selectedPurchaseOption.GetComponent<Unit>();
 						int cost = purchaseUnit.cost;
 						if (manager.credits[id] >= cost) {
@@ -134,6 +133,11 @@ public class PlayerController : MonoBehaviour {
 			}
 		}else{
 			error = 5;
+		}
+		if (local && botControlled == false) {
+			if (!Input.GetButton ("Shift")) {
+				selectedPurchaseOption = null;
+			}
 		}
 		return error;
 	}

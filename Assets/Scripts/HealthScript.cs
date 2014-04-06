@@ -12,10 +12,11 @@ public class HealthScript : MonoBehaviour {
 	public string armorType;
 	public int value;
 	public Unit lastHit;
+	public Unit unit;
 
 	// Use this for initialization
 	void Start () {
-		value = GetComponent<Unit>().income*2;
+		unit = GetComponent<Unit>();
 		if (maxHealth == 0) {
 			maxHealth = health;
 		}
@@ -23,6 +24,9 @@ public class HealthScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (unit.manager) {
+			value = unit.income * unit.manager.creditsMultiplier;
+		}
 		if (health <= 0 && invincible == false) {
 			Destroy(gameObject);
 			if (lastHit) {

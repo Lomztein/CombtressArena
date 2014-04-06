@@ -46,26 +46,33 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\PointerScript.cs" />
+     <Compile Include="Assets\BlastBulletScript.cs" />
      <Compile Include="Assets\Scripts\AirstrikeBombScript.cs" />
      <Compile Include="Assets\Scripts\BotInput.cs" />
      <Compile Include="Assets\Scripts\BotManager.cs" />
      <Compile Include="Assets\Scripts\BulletScript.cs" />
      <Compile Include="Assets\Scripts\CameraScript.cs" />
+     <Compile Include="Assets\Scripts\DamageOverTime.cs" />
+     <Compile Include="Assets\Scripts\DataCarrierScript.cs" />
      <Compile Include="Assets\Scripts\DestroyAfterTimeScript.cs" />
      <Compile Include="Assets\Scripts\GlobalManager.cs" />
+     <Compile Include="Assets\Scripts\GranadeScript.cs" />
      <Compile Include="Assets\Scripts\GroundVehicleController.cs" />
      <Compile Include="Assets\Scripts\HealthScript.cs" />
      <Compile Include="Assets\Scripts\HomingBullet.cs" />
      <Compile Include="Assets\Scripts\InfantryController.cs" />
+     <Compile Include="Assets\Scripts\LaserBullet.cs" />
      <Compile Include="Assets\Scripts\MapManager.cs" />
+     <Compile Include="Assets\Scripts\MenuScript.cs" />
      <Compile Include="Assets\Scripts\NetworkInput.cs" />
      <Compile Include="Assets\Scripts\NetworkManager.cs" />
      <Compile Include="Assets\Scripts\ParticleScript.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
      <Compile Include="Assets\Scripts\PlayerInput.cs" />
+     <Compile Include="Assets\Scripts\PointerScript.cs" />
      <Compile Include="Assets\Scripts\ProducingStructure.cs" />
      <Compile Include="Assets\Scripts\PurchaseableStructure.cs" />
+     <Compile Include="Assets\Scripts\SkirmishMenuScript.cs" />
      <Compile Include="Assets\Scripts\StrikejetController.cs" />
      <Compile Include="Assets\Scripts\TargetFinder.cs" />
      <Compile Include="Assets\Scripts\TurretController.cs" />

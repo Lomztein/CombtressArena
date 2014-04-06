@@ -28,7 +28,7 @@ public class TargetFinder : MonoBehaviour {
 				}
 			}
 		}
-		if (unit.distanceToTarget > unit.weaponRange) {
+		if (unit.distanceToTarget > unit.weaponRange && unit.targetOverride == null) {
 			FindTarget ();
 		}
 	}

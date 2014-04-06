@@ -66,7 +66,9 @@ public class WeaponScript : MonoBehaviour {
 			if (reloaded == true) {
 				reloaded = false;
 				Invoke("Reload",reloadTime * parent.bFirerate);
-				Instantiate(fireParticle,muzzles[muzzleIndex].position + Vector3.back,muzzles[muzzleIndex].rotation);
+				if (fireParticle) {
+					Instantiate(fireParticle,muzzles[muzzleIndex].position + Vector3.back,muzzles[muzzleIndex].rotation);
+				}
 				for (int i=0;i<amount;i++) {
 					bullet = (GameObject)Instantiate(bulletType,muzzles[muzzleIndex].position,muzzles[muzzleIndex].rotation);
 					FeedBulletData (bullet);
@@ -83,7 +85,9 @@ public class WeaponScript : MonoBehaviour {
 	}
 
 	void FireSequence () {
-		Instantiate(fireParticle,muzzles[muzzleIndex].position + Vector3.back,muzzles[muzzleIndex].rotation);
+		if (fireParticle) {
+			Instantiate(fireParticle,muzzles[muzzleIndex].position + Vector3.back,muzzles[muzzleIndex].rotation);
+		}
 		for (int i=0;i<amount;i++) {
 			bullet = (GameObject)Instantiate(bulletType,muzzles[muzzleIndex].position,muzzles[muzzleIndex].rotation);
 			FeedBulletData (bullet);

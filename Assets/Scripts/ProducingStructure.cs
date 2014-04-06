@@ -7,6 +7,8 @@ public class ProducingStructure : MonoBehaviour {
 	public GameObject unit;
 	public float size;
 	public float income;
+	public bool giveAllPlayers;
+	public bool overrideTime;
 	public Unit u;
 	float locIncome;
 
@@ -14,7 +16,7 @@ public class ProducingStructure : MonoBehaviour {
 	void Start () {
 		if (unit) {
 			HealthScript h = unit.GetComponent<HealthScript>();
-			if (h) {
+			if (h && overrideTime == false) {
 				if (h.armorType == "light") {
 					time = 20;
 				}
@@ -33,8 +35,17 @@ public class ProducingStructure : MonoBehaviour {
 	void Update () {
 		locIncome += (float)income * Time.deltaTime;
 		if (locIncome >= 1 && u.manager) {
-			u.manager.credits[u.playerIndex] += 1;
-			locIncome = 0;
+			if (giveAllPlayers) {
+				for (int i=0;i<u.manager.players;i++) {
+					if (u.manager.playerControllers[i].teamIndex == u.teamIndex) {
+						u.manager.credits[i] += 1;
+						locIncome = 0;
+					}
+				}
+			}else{
+				u.manager.credits[u.playerIndex] += 1;
+				locIncome = 0;
+			}
 		}
 	}
 	
@@ -53,6 +64,9 @@ public class ProducingStructure : MonoBehaviour {
 			newU.playerName = u.playerName;
 			newU.teamName = u.teamName;
 			newU.playerIndex = u.playerIndex;
+			if (u.targetOverride) {
+				newU.targetOverride = u.targetOverride;
+			}
 		}
 	}
 }

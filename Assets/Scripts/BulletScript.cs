@@ -10,9 +10,12 @@ public class BulletScript : MonoBehaviour {
 	public float time;
 	public string damageType;
 	public LayerMask layer;
+	public bool dealNativeDamage = true;
 	public bool modifySize;
 	public bool homing;
 	public bool piercing;
+	public bool applyEffect;
+	public GameObject effect;
 	public float speedZ;
 	public float turnSpeed;
 	public Transform target;
@@ -48,7 +51,9 @@ public class BulletScript : MonoBehaviour {
 		Ray ray = new Ray(transform.position,velocity);
 		RaycastHit hit;
 		if (Physics.Raycast (ray, out hit, velocity.magnitude * Time.fixedDeltaTime,layer)) {
-			Hit(hit.collider,hit.point);
+			if (dealNativeDamage) {
+				Hit(hit.collider,hit.point,transform.rotation);
+			}
 		}
 	}
 
@@ -76,7 +81,9 @@ public class BulletScript : MonoBehaviour {
 			transform.position += velocity * Time.fixedDeltaTime;
 		}
 		if (Physics.Raycast (ray, out hit, velocity.magnitude * Time.fixedDeltaTime,layer)) {
-			Hit(hit.collider,hit.point);
+			if (dealNativeDamage) {
+				Hit(hit.collider,hit.point,transform.rotation);
+			}
 		}
 		if (time > 0) {
 			time -= Time.fixedDeltaTime;
@@ -85,12 +92,16 @@ public class BulletScript : MonoBehaviour {
 		}
 	}
 
-	void Hit (Collider other, Vector3 pos) {
+	public void Hit (Collider other, Vector3 pos, Quaternion rot) {
 		if (hitParticle) {
-			Instantiate(hitParticle,pos+transform.forward * -2,transform.rotation);
+			Instantiate(hitParticle,pos+transform.forward * -2,rot);
 		}
 		healthScript = other.gameObject.GetComponent<HealthScript>();
 		if (healthScript) {
+			if (applyEffect) {
+				GameObject ef = (GameObject)Instantiate(effect,other.transform.position,Quaternion.identity);
+				ef.transform.parent = other.transform;
+			}
 			if (piercing == false) { Destroy(gameObject); }
 			if (healthScript.armorType == damageType) {
 				healthScript.health -= damage;

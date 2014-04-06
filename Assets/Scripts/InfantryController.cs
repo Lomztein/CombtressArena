@@ -12,6 +12,7 @@ public class InfantryController : MonoBehaviour {
 	public Vector2 movement;
 	public Unit unit;
 	public TargetFinder tf;
+	public Texture2D purchaseTexture;
 
 	// Use this for initialization
 	void Start () {
