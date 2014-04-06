@@ -126,7 +126,6 @@ public class GlobalManager : MonoBehaviour {
 
 	void GetCarrierData () {
 		if (ds) {
-			Debug.Log ("POOPNUGGETS");
 			players = ds.players;
 			localID = ds.localID;
 			localName = ds.localName;
@@ -275,12 +274,12 @@ public class GlobalManager : MonoBehaviour {
 		if (t0 == 1) {
 			PauseGame ();
 			gameEnded = true;
-			endReason = "Team 1 won!";
+			endReason = teamNames[0] + " won!";
 		}
 		if (t1 == 1) {
 			PauseGame ();
 			gameEnded = true;
-			endReason = "Team 2 won!";
+			endReason = teamNames[1] + " won!";
 		}
 	}
 
