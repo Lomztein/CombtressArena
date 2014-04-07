@@ -6,9 +6,9 @@ public class Unit : MonoBehaviour {
 
 	public string unitType;
 	public string unitName;
-	/*public string unitDisc;
+	public string unitDisc;
 	public string[] unitPros;
-	public string[] unitCons;*/
+	public string[] unitCons;
 	public string playerName;
 	public int teamIndex;
 	public int playerIndex;

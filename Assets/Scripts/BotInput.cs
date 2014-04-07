@@ -59,7 +59,13 @@ public class BotInput : MonoBehaviour {
 			}
 		}
 		if (aiType == "steamroller") {
-			locUnit = FindStrongestUnit (manager.purchaseables);
+			locUnit = FindStrongestUnit (manager.purchaseables,"power");
+		}
+		if (aiType == "ranger") {
+			locUnit = FindStrongestUnit (manager.purchaseables,"range");
+		}
+		if (aiType == "tanker") {
+			locUnit = FindStrongestUnit (manager.purchaseables,"health");
 		}
 		if (aiType == "rusher") {
 			locUnit = manager.purchaseables[Random.Range (0,manager.purchaseables.Length)];
@@ -72,17 +78,38 @@ public class BotInput : MonoBehaviour {
 		return locUnit;
 	}
 
-	GameObject FindStrongestUnit (GameObject[] units) {
+	GameObject FindStrongestUnit (GameObject[] units, string type) {
 		GameObject strongest = units[0];
 		float strength = 0;
+		float health = 0;
+		float range = 0;
 		for (int i=0;i<units.Length;i++) {
 			Unit u = units[i].GetComponent<Unit>();
 			if (credits >= u.cost) {
 				if (u.newWeapon) {
-					WeaponScript uw = u.newWeapon.GetComponent<WeaponScript>();
-					float nStrength = uw.damage / uw.reloadTime;
-					if (nStrength > strength) {
-						strongest = units[i];
+					if (type == "power") {
+						WeaponScript uw = u.newWeapon.GetComponent<WeaponScript>();
+						float nStrength = uw.damage / uw.reloadTime;
+						if (nStrength > strength) {
+							strength = nStrength;
+							strongest = units[i];
+						}
+					}
+					if (type == "health") {
+						HealthScript hs = u.GetComponent<HealthScript>();
+						float nHealth = hs.maxHealth;
+						if (nHealth > health) {
+							health = nHealth;
+							strongest = units[i];
+						}
+					}
+					if (type == "range") {
+						WeaponScript uv = u.newWeapon.GetComponent<WeaponScript>();
+						float nRange = uv.range * u.bRange;
+						if (nRange > range) {
+							range = nRange;
+							strongest = units[i];
+						}
 					}
 				}
 			}else{
@@ -94,7 +121,7 @@ public class BotInput : MonoBehaviour {
 	
 	bool DoCreateUnit () {
 		bool create = false;
-		if (aiType == "balanced" || aiType == "defender" || aiType == "attacker") {
+		if (aiType == "balanced" || aiType == "defender" || aiType == "attacker" || aiType == "ranger" || aiType == "tanker") {
 			if (Random.Range (0,100) == 1) {
 				create = true;
 			}
@@ -123,7 +150,6 @@ public class BotInput : MonoBehaviour {
 		GameObject weakest = null;
 		int cheapestCost = int.MaxValue;
 		if (tryingUnit.cost <= credits) {
-			Debug.Log ("Trying to sell something so I can place a " + tryingUnit.name,gameObject);
 			for (int i=0;i<units.Length;i++) {
 				if (units[i]) {
 					Unit locUnit = units[i].GetComponent<Unit>();
