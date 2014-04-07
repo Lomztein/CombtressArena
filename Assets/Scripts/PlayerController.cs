@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour {
 	public string playerName;
 
 	public Vector3 focusPoint;
+	public Unit focusUnit;
 	public Transform pointer;
 	public GameObject selectedPurchaseOption;
 	public Vector3 mousePos;
@@ -81,7 +82,7 @@ public class PlayerController : MonoBehaviour {
 		if (selectedPurchaseOption) {
 			if (population < manager.maxPopulation) {
 				if (!Physics.CheckSphere(focusPoint,1,freindlyLayer) && nearestFortress) {
-					if (manager.IsInsideBattlefield (focusPoint) && Vector3.Distance (mousePos,nearestFortress.position) < map.fRange) {
+					if (manager.IsInsideBattlefield (focusPoint) && Vector3.Distance (focusPoint,nearestFortress.position) < map.fRange) {
 						Unit purchaseUnit = selectedPurchaseOption.GetComponent<Unit>();
 						int cost = purchaseUnit.cost;
 						if (manager.credits[id] >= cost) {

@@ -296,6 +296,7 @@ public class GlobalManager : MonoBehaviour {
 		}else{
 			Time.timeScale = 1;
 		}
+		Debug.Log (Time.timeScale);
 		if (localPlayer) {
 			if (localPlayer.selectedPurchaseOption) {
 				Unit locUnit = localPlayer.selectedPurchaseOption.GetComponent<Unit>();

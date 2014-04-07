@@ -11,7 +11,7 @@ public class CameraScript : MonoBehaviour {
 	void Start () {
 		map = GameObject.FindGameObjectWithTag("Stats").GetComponent<MapManager>();
 	}
-	void Update () {
+	void OnGUI () {
 
 		Time.timeScale = gameSpeed;
 

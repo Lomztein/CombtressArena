@@ -202,6 +202,8 @@ public class Unit : MonoBehaviour {
 				selectedSprite.parent = transform;
 				selectedSprite.position -= new Vector3 (0,0,-0.1f);
 				selectedSprite.localScale = sprite.bounds.extents*1.1f;
+			}else{
+				selectedSprite.rotation = Quaternion.identity;
 			}
 		}else{
 			if (selectedSprite) {
