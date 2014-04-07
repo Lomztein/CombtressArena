@@ -22,6 +22,10 @@ public class PlayerController : MonoBehaviour {
 	public GameObject[] freindlyFortresses;
 	public Transform nearestFortress;
 
+	public int selectedCount;
+	public Unit[] selectedUnits;
+	public Texture2D[] selectedSprites;
+
 	public LayerMask freindlyLayer;
 	public int population;
 
@@ -42,6 +46,30 @@ public class PlayerController : MonoBehaviour {
 		name = playerName;
 	}
 
+	public void UpdateSelectedUnits () {
+		Debug.Log("Updating selected units");
+		GameObject[] sprs = GameObject.FindGameObjectsWithTag("SelectorSprite");
+		selectedUnits = new Unit[sprs.Length];
+		selectedSprites = new Texture2D[sprs.Length];
+		selectedCount = sprs.Length;
+		for (int i=0;i<sprs.Length;i++) {
+			selectedUnits[i] = sprs[i].transform.parent.GetComponent<Unit>();
+			selectedSprites[i] = GetSprite (selectedUnits[i]);
+		}
+	}
+
+	Texture2D GetSprite (Unit u) {
+		if (u.unitType == "infantry") {
+			return u.GetComponent<InfantryController>().purchaseTexture;
+		}
+		if (u.unitType == "structure") {
+			if (u.newWeapon) {
+				return u.newWeapon.transform.FindChild ("Sprite").GetComponent<SpriteRenderer>().sprite.texture;
+			}
+		}
+		return u.transform.FindChild ("Sprite").GetComponent<SpriteRenderer>().sprite.texture;
+	}
+	
 	void FixedUpdate () {
 		if (local) {
 			GetNearestFortress();

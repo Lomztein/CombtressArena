@@ -46,8 +46,8 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\BlastBulletScript.cs" />
      <Compile Include="Assets\Scripts\AirstrikeBombScript.cs" />
+     <Compile Include="Assets\Scripts\BlastBulletScript.cs" />
      <Compile Include="Assets\Scripts\BotInput.cs" />
      <Compile Include="Assets\Scripts\BotManager.cs" />
      <Compile Include="Assets\Scripts\BulletScript.cs" />

@@ -25,6 +25,7 @@ public class GlobalManager : MonoBehaviour {
 	public GameObject factory;
 	public PlayerController[] playerControllers;
 	public PlayerController localPlayer;
+	public Unit localFocusUnit;
 	public Light sun;
 	public Vector3 mousePos;
 
@@ -296,7 +297,6 @@ public class GlobalManager : MonoBehaviour {
 		}else{
 			Time.timeScale = 1;
 		}
-		Debug.Log (Time.timeScale);
 		if (localPlayer) {
 			if (localPlayer.selectedPurchaseOption) {
 				Unit locUnit = localPlayer.selectedPurchaseOption.GetComponent<Unit>();
@@ -393,9 +393,10 @@ public class GlobalManager : MonoBehaviour {
 				selCol.size = new Vector3 (sSelEnd.x-sSelOrigin.x,sSelEnd.y-sSelOrigin.y,999);
 			}
 			if (localPlayer) {
-				GUI.Box (new Rect(0,Screen.height-buttonSize-70,Screen.width,buttonSize+70),"");
+				GUI.Box (new Rect(0,Screen.height-buttonSize-65,(buttonSize+buttonDistance)*8-5,buttonSize+75),"");
+				GUI.Box (new Rect(0,Screen.height-buttonSize-25,Screen.width,buttonSize+25),"");
 				if ((buttonSize + buttonDistance) * activeButtons.Length + 20 > Screen.width) {
-					menuOffset = (int)GUI.HorizontalSlider (new Rect(10,Screen.height-buttonSize-30,Screen.width-20,20),menuOffset,(Mathf.RoundToInt(-buttonSize - buttonDistance) * activeButtons.Length),0);
+					menuOffset = (int)GUI.HorizontalSlider (new Rect(10,Screen.height-buttonSize-20,Screen.width-20,20),menuOffset,(Mathf.RoundToInt(-buttonSize - buttonDistance) * activeButtons.Length),0);
 				}
 				if (GUI.Button (new Rect(10,Screen.height - buttonSize - 55,buttonSize*2,buttonSize/2),"INFANTRY")) {
 					UpdateMenu (infantry,infButtons);
@@ -426,6 +427,18 @@ public class GlobalManager : MonoBehaviour {
 				}
 				tooltip = GUI.tooltip;
 				GUI.Label (new Rect(Input.mousePosition.x,Screen.height - (buttonSize+30),Screen.width,20),GUI.tooltip);
+				if (localPlayer.selectedCount > 0) {
+					Rect unitRect = new Rect(Screen.width-200,0,200,Screen.height-buttonSize-25);
+					GUI.Box (unitRect,"");
+					for (int a=0;a<localPlayer.selectedCount;a++) {
+						GUI.Box (new Rect(Screen.width-190,10+(a*buttonSize),180,buttonSize),"");
+						GUI.DrawTexture(new Rect(Screen.width-190,10+(a*buttonSize),buttonSize,buttonSize),localPlayer.selectedSprites[a]);
+						GUI.Label (new Rect(Screen.width+buttonSize-185,12+(a*buttonSize),175-buttonSize,buttonSize-10),localPlayer.selectedUnits[a].unitName.ToUpper());
+					}
+					if (localPlayer.selectedCount == 1) {
+						GUI.Box (new Rect (Screen.width-190,buttonSize+20,180,Screen.height-buttonSize-105),"");
+					}
+				}
 			}
 			for (int i=0;i<players;i++) {
 				if (i==0) {

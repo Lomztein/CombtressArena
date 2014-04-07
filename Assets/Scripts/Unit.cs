@@ -142,17 +142,12 @@ public class Unit : MonoBehaviour {
 		expNeeded = level * level * 25;
 	}
 
-	void OnMouseDown () {
-		if (playerIndex == manager.localID) {
-			selected = true;
-		}
-	}
-	
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetButton ("Fire1")) {
 			if (playerIndex == manager.localID) {
 				if (Physics.CheckSphere(transform.position,sprite.bounds.extents.magnitude/1.618f,manager.selectorLayer)) {
+					if (selected == false) { manager.localPlayer.UpdateSelectedUnits(); }
 					selected = true;
 				}else{
 					if (!Input.GetButton ("Shift")) {
@@ -208,6 +203,7 @@ public class Unit : MonoBehaviour {
 		}else{
 			if (selectedSprite) {
 				Destroy (selectedSprite.gameObject);
+				manager.localPlayer.UpdateSelectedUnits();
 			}
 		}
 		if (line) {
