@@ -48,6 +48,7 @@ public class GlobalManager : MonoBehaviour {
 
 	public float buttonSize;
 	public float buttonDistance;
+	public float infoScreenSize;
 
 	public int menuID;
 	public int menuOffset;
@@ -55,6 +56,13 @@ public class GlobalManager : MonoBehaviour {
 	public string tooltip;
 	public GameObject emptySprite;
 	public GameObject selectedSprite;
+
+	Unit locSelUnit;
+	WeaponScript locSelWep;
+	HealthScript locSelHel;
+	BulletScript locSelBul;
+
+	GameObject mouseFocUnit;
 
 	public Vector3[] nearbyVectors;
 	public int particleAmount;
@@ -82,6 +90,7 @@ public class GlobalManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
 		map = GetComponent<MapManager>();
 		GameObject dc = GameObject.Find ("DataCarrier");
 		if (dc) {
@@ -410,6 +419,7 @@ public class GlobalManager : MonoBehaviour {
 				if (GUI.Button (new Rect(10+(buttonSize*2+buttonDistance)*3,Screen.height - buttonSize - 55,buttonSize*2,buttonSize/2),"STRUCTURES")) {
 					UpdateMenu (structures,strButtons);
 				}
+				bool anyContainsMouse = false;
 				for (int i=0;i<activeButtons.Length;i++) {
 					Unit newU = activeButtons[i].GetComponent<Unit>();
 					Rect rect = new Rect ((float)menuOffset + 10 + i * (buttonSize + buttonDistance),Screen.height - buttonSize-10,buttonSize,buttonSize);
@@ -423,21 +433,92 @@ public class GlobalManager : MonoBehaviour {
 					}else{
 						GUI.Box (rect,new GUIContent("",newU.unitName.ToUpper () + ", COST: " + newU.cost + ", INSUFFICIENT CREDITS"));
 					}
-					GUI.DrawTexture (rect,activeSprites[i],ScaleMode.ScaleToFit,true,0f);
+					GUI.DrawTexture (rect,activeSprites[i],ScaleMode.ScaleToFit,true,1);
+					if (rect.Contains(new Vector2 (Input.mousePosition.x,Screen.height-Input.mousePosition.y))) {
+						mouseFocUnit = activeButtons[i];
+						anyContainsMouse = true;
+						if (locSelUnit == null) {
+							locSelUnit = mouseFocUnit.GetComponent<Unit>();
+						}else{
+							if (locSelUnit.gameObject != mouseFocUnit) {
+								locSelUnit = mouseFocUnit.GetComponent<Unit>();
+							}
+						}
+					}
+				}
+				if (anyContainsMouse == false) {
+					mouseFocUnit = null;
 				}
 				tooltip = GUI.tooltip;
 				GUI.Label (new Rect(Input.mousePosition.x,Screen.height - (buttonSize+30),Screen.width,20),GUI.tooltip);
-				if (localPlayer.selectedCount > 0) {
-					Rect unitRect = new Rect(Screen.width-200,0,200,Screen.height-buttonSize-25);
+				if (localPlayer.selectedCount > 0 || mouseFocUnit) {
+					Rect unitRect = new Rect(Screen.width-infoScreenSize,0,infoScreenSize,Screen.height-buttonSize-25);
 					GUI.Box (unitRect,"");
 					for (int a=0;a<localPlayer.selectedCount;a++) {
-						GUI.Box (new Rect(Screen.width-190,10+(a*buttonSize),180,buttonSize),"");
-						GUI.DrawTexture(new Rect(Screen.width-190,10+(a*buttonSize),buttonSize,buttonSize),localPlayer.selectedSprites[a]);
-						GUI.Label (new Rect(Screen.width+buttonSize-185,12+(a*buttonSize),175-buttonSize,buttonSize-10),localPlayer.selectedUnits[a].unitName.ToUpper());
+						GUI.Box (new Rect(Screen.width-infoScreenSize+10,10+(a*buttonSize),infoScreenSize-20,buttonSize),"");
+						GUI.DrawTexture(new Rect(Screen.width-infoScreenSize+10,10+(a*buttonSize),buttonSize,buttonSize),localPlayer.selectedSprites[a]);
+						GUI.Label (new Rect(Screen.width+buttonSize-infoScreenSize+10,12+(a*buttonSize),infoScreenSize-25-buttonSize,buttonSize-10),localPlayer.selectedUnits[a].unitName.ToUpper());
 					}
-					if (localPlayer.selectedCount == 1) {
-						GUI.Box (new Rect (Screen.width-190,buttonSize+20,180,Screen.height-buttonSize-105),"");
+					if ((localPlayer.selectedCount == 1 && localPlayer.selectedUnits[0]) || mouseFocUnit) {
+						if (localPlayer.selectedCount > 0) { if (localPlayer.selectedUnits[0]) { locSelUnit = localPlayer.selectedUnits[0]; }}
+						string weaponInfo;
+						if (locSelHel == null) {
+							locSelHel = locSelUnit.GetComponent<HealthScript>();
+							if (locSelUnit.newWeapon) {
+								locSelWep = locSelUnit.newWeapon.GetComponent<WeaponScript>();
+								locSelBul = locSelWep.bulletType.GetComponent<BulletScript>();
+							}
+						}
+						if (locSelWep) {
+							weaponInfo = "ANTI-"+locSelBul.damageType.ToUpper ()+", "+locSelHel.armorType.ToUpper();
+								if (locSelUnit.unitDisc.Length > 0) {
+								weaponInfo = weaponInfo + "\n\n"+locSelUnit.unitDisc;
+							}else{
+								weaponInfo = weaponInfo + "\n\nTHIS UNIT LACKS A DESCRIPTION, GET ON IT YOU LAZY DEVS!";
+							}
+								weaponInfo = weaponInfo +"\n\nDAMAGE: "+locSelWep.damage*locSelUnit.bDamage+" * "+locSelWep.amount
+								+"\nFIRERATE: "+(1/((Mathf.Max (1,locSelWep.transform.childCount))*(locSelWep.reloadTime*locSelUnit.bFirerate))).ToString ()+" / SEC"
+									+"\nDPS: "+(locSelWep.damage*locSelWep.amount)/((Mathf.Max (1,locSelWep.transform.childCount))*(locSelWep.reloadTime*locSelUnit.bFirerate))
+									+"\nRANGE: "+locSelWep.range*locSelUnit.bRange+"\n";
+							if (mouseFocUnit == null) {
+								weaponInfo = weaponInfo
+									+"\nHULL: "+locSelHel.health+" / "+locSelHel.maxHealth
+									+"\nEXP: "+locSelUnit.experience+" / "+locSelUnit.expNeeded
+									+"\nLEVEL: "+locSelUnit.level+"\n";
+							}
+
+							if (locSelUnit.unitPros.Length > 0 || locSelBul.homing || locSelBul.piercing || locSelBul.applyEffect) {
+								weaponInfo = weaponInfo+"\nPROS:";
+								for (int a=0;a<locSelUnit.unitPros.Length;a++) {
+									weaponInfo = weaponInfo + "\n"+locSelUnit.unitPros[a].ToUpper();
+								}
+								if (locSelBul.homing) {
+									weaponInfo = weaponInfo + "\nHOMING BULLETS";
+								}
+								if (locSelBul.piercing) {
+									weaponInfo = weaponInfo + "\nPIERCING BULLETS";
+								}
+								if (locSelBul.applyEffect) {
+									weaponInfo = weaponInfo + "\n"+locSelBul.effect.name.ToUpper ();
+								}
+							}
+							if (locSelUnit.unitCons.Length > 0) {
+								weaponInfo = weaponInfo+"\n\nCONS";
+								for (int a=0;a<locSelUnit.unitCons.Length;a++) {
+									weaponInfo = weaponInfo + "\n"+locSelUnit.unitCons[a].ToUpper();
+								}
+							}
+						}else{
+							weaponInfo = "PASSIVE, "+locSelHel.armorType.ToUpper()+"\n\n"+locSelUnit.unitDisc.ToUpper();
+						}
+						GUI.Box (new Rect (Screen.width-infoScreenSize+10,buttonSize+20,infoScreenSize-20,Screen.height-buttonSize-105),"");
+						GUI.Label (new Rect(Screen.width-infoScreenSize+15,buttonSize+22,infoScreenSize-25,Screen.height-buttonSize-100),weaponInfo);
 					}
+				}
+				if (localPlayer.selectedCount != 1) {
+					locSelWep = null;
+					locSelHel = null;
+					locSelBul = null;
 				}
 			}
 			for (int i=0;i<players;i++) {

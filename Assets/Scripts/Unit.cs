@@ -63,10 +63,7 @@ public class Unit : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		expNeeded = level * level * 25;
-		if (newWeapon) {
-			EquipWeapon();
-		}
-		if (newWeapon) {
+		if (newWeapon && weapon == null) {
 			EquipWeapon ();
 		}
 		transform.position += -transform.forward * height;
@@ -118,7 +115,6 @@ public class Unit : MonoBehaviour {
 			weapon.transform.parent = transform;
 			weaponScript = weapon.GetComponent<WeaponScript>();
 			weaponScript.parent = this;
-			newWeapon = null;
 			bulletSpeed = weaponScript.bulletSpeed * bBulletSpeed;
 		}
 	}
@@ -129,6 +125,7 @@ public class Unit : MonoBehaviour {
 		health.maxHealth = health.maxHealth * 1.01f;
 		health.health = health.maxHealth;
 		if (weapon) {
+			bFirerate = -(-Mathf.Pow (0.99f,level));
 			bDamage = bDamage * 1.01f;
 			bRange = bRange * 1.01f;
 			bBulletSpeed = bBulletSpeed * 1.005f;
@@ -147,7 +144,6 @@ public class Unit : MonoBehaviour {
 		if (Input.GetButton ("Fire1")) {
 			if (playerIndex == manager.localID) {
 				if (Physics.CheckSphere(transform.position,sprite.bounds.extents.magnitude/1.618f,manager.selectorLayer)) {
-					if (selected == false) { manager.localPlayer.UpdateSelectedUnits(); }
 					selected = true;
 				}else{
 					if (!Input.GetButton ("Shift")) {
@@ -169,9 +165,6 @@ public class Unit : MonoBehaviour {
 		}
 		if (experience >= expNeeded) {
 			LevelUp ();
-		}
-		if (newWeapon) {
-			EquipWeapon ();
 		}
 		if (target) {
 			if (targetUnit) { targetVel = targetUnit.velocity; }
@@ -196,14 +189,11 @@ public class Unit : MonoBehaviour {
 				selectedSprite = loc.transform;
 				selectedSprite.parent = transform;
 				selectedSprite.position -= new Vector3 (0,0,-0.1f);
-				selectedSprite.localScale = sprite.bounds.extents*1.1f;
-			}else{
-				selectedSprite.rotation = Quaternion.identity;
+				manager.localPlayer.UpdateSelectedUnits();
 			}
 		}else{
 			if (selectedSprite) {
-				Destroy (selectedSprite.gameObject);
-				manager.localPlayer.UpdateSelectedUnits();
+				DestroySelectionSprite();
 			}
 		}
 		if (line) {
@@ -213,6 +203,18 @@ public class Unit : MonoBehaviour {
 				line.SetPosition(1,target.transform.position);
 				line.material.mainTextureScale = new Vector3 (Vector3.Distance (transform.position,target.transform.position),1);
 			}
+		}
+	}
+
+	void DestroySelectionSprite () {
+		DestroyImmediate (selectedSprite.gameObject);
+		manager.localPlayer.UpdateSelectedUnits();
+	}
+
+	void LateUpdate () {
+		if (selectedSprite) {
+			selectedSprite.localScale = sprite.bounds.extents*1.1f;
+			selectedSprite.rotation = Quaternion.identity;
 		}
 	}
 
@@ -253,6 +255,9 @@ public class Unit : MonoBehaviour {
 		}
 		if (tag == "Fortress") {
 			manager.TestFortresses();
+		}
+		if (selectedSprite) {
+			DestroySelectionSprite();
 		}
 	}
 

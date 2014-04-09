@@ -110,7 +110,8 @@ public class SkirmishMenuScript : MonoBehaviour {
 			if (typeMenuOpen) {
 				for (int i=0;i<botTypes.Length;i++) {
 					if (GUI.Button (new Rect(slotLength+slotsDistanceFromSide,slotsDistanceFromTop + ((i)*(slotSize+slotDistance)),slotLength/2,slotSize),new GUIContent(botTypes[i].ToUpper(),botTypeDescriptions[i].ToUpper()))) {
-						types[j+selectedIndex] = botTypes[i];
+						Debug.Log (i);
+						types[selectedIndex] = botTypes[i];
 						typeMenuOpen = false;
 						selectedIndex = -1;
 					}
