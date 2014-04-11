@@ -85,6 +85,11 @@ public class Unit : MonoBehaviour {
 			}
 		}
 		GetLayers();
+		GameObject radarDot = new GameObject(teamIndex.ToString ());
+		radarDot.transform.position = transform.position;
+		radarDot.transform.parent = transform;
+		radarDot.transform.localScale = Vector3.one * Mathf.Max (1,(sprite.bounds.extents.magnitude)/1.618f);
+		radarDot.tag = "RadarDot";
 	}
 
 	public void GetLayers () {
@@ -122,12 +127,12 @@ public class Unit : MonoBehaviour {
 	void LevelUp () {
 		float excess = experience - expNeeded;
 		experience = excess;
-		health.maxHealth = health.maxHealth * 1.01f;
+		health.maxHealth = health.maxHealth * 1.10f;
 		health.health = health.maxHealth;
 		if (weapon) {
-			bFirerate = -(-Mathf.Pow (0.99f,level));
-			bDamage = bDamage * 1.01f;
-			bRange = bRange * 1.01f;
+			bFirerate = -(-Mathf.Pow (0.90f,level));
+			bDamage = bDamage * 1.10f;
+			bRange = bRange * 1.02f;
 			bBulletSpeed = bBulletSpeed * 1.005f;
 			bulletSpeed = weaponScript.bulletSpeed * bBulletSpeed;
 		}

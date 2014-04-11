@@ -11,7 +11,25 @@ Platform assembly: C:\Users\Marcus\Documents\CombtressArena\Test_Data\Managed\Un
 Loading C:\Users\Marcus\Documents\CombtressArena\Test_Data\Managed\UnityEngine.dll into Unity Child Domain
 Platform assembly: C:\Users\Marcus\Documents\CombtressArena\Test_Data\Managed\Assembly-CSharp.dll (this message is harmless)
 Loading C:\Users\Marcus\Documents\CombtressArena\Test_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
-- Completed reload, in  0.257 seconds
+- Completed reload, in  0.550 seconds
 desktop: 1366x768 60Hz; virtual: 1366x768 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
+HandleD3DDeviceLost
+  HandleD3DDeviceLost: still lost
+Skipped rendering frame because GfxDevice is in invalid state (device lost)
+ 
+(Filename:  Line: 1539)
+
+HandleD3DDeviceLost
+  HandleD3DDeviceLost: needs reset, doing it
+FullResetD3DDevice
+ResetD3DDevice
+dev->Reset
+D3Dwindow device not lost anymore
+HandleD3DDeviceLost
+  HandleD3DDeviceLost: needs reset, doing it
+FullResetD3DDevice
+ResetD3DDevice
+dev->Reset
+D3Dwindow device not lost anymore

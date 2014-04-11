@@ -49,6 +49,7 @@ public class GlobalManager : MonoBehaviour {
 	public float buttonSize;
 	public float buttonDistance;
 	public float infoScreenSize;
+	public float minimapSize;
 
 	public int menuID;
 	public int menuOffset;
@@ -85,6 +86,8 @@ public class GlobalManager : MonoBehaviour {
 	public Vector3 sSelOrigin;
 	public Vector3 sSelEnd;
 	public BoxCollider selCol;
+
+	public bool enableRadar;
 
 	DataCarrierScript ds;
 
@@ -294,6 +297,13 @@ public class GlobalManager : MonoBehaviour {
 	}
 
 	void Update () {
+		if (localPlayer) {
+			if (localPlayer.radar) {
+				enableRadar = true;
+			}else{
+				enableRadar = false;
+			}
+		}
 		Vector3 mp = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 		mousePos = new Vector3 (mp.x,mp.y,0);
 		sun.intensity = Mathf.Sin ((Time.time+240)/240)/5+0.3f;
@@ -363,16 +373,16 @@ public class GlobalManager : MonoBehaviour {
 
 	public bool IsInsideBattlefield (Vector2 pos) {
 		bool inside = true;
-		if ( pos.x < -map.mapWidth ) {
+		if ( pos.x < -map.mapWidth-0.1f ) {
 			inside = false;
 		}
-		if ( pos.x > map.mapWidth ) {
+		if ( pos.x > map.mapWidth+0.1f ) {
 			inside = false;
 		}
-		if ( pos.y < -map.mapHeight ) {
+		if ( pos.y < -map.mapHeight-0.1f ) {
 			inside = false;
 		}
-		if ( pos.y > map.mapHeight ) {
+		if ( pos.y > map.mapHeight+0-1f ) {
 			inside = false;
 		}
 		return inside;
@@ -403,7 +413,7 @@ public class GlobalManager : MonoBehaviour {
 			}
 			if (localPlayer) {
 				GUI.Box (new Rect(0,Screen.height-buttonSize-65,(buttonSize+buttonDistance)*8-5,buttonSize+75),"");
-				GUI.Box (new Rect(0,Screen.height-buttonSize-25,Screen.width,buttonSize+25),"");
+				GUI.Box (new Rect(0,Screen.height-buttonSize-25,Screen.width-minimapSize,buttonSize+25),"");
 				if ((buttonSize + buttonDistance) * activeButtons.Length + 20 > Screen.width) {
 					menuOffset = (int)GUI.HorizontalSlider (new Rect(10,Screen.height-buttonSize-20,Screen.width-20,20),menuOffset,(Mathf.RoundToInt(-buttonSize - buttonDistance) * activeButtons.Length),0);
 				}
@@ -469,7 +479,7 @@ public class GlobalManager : MonoBehaviour {
 								locSelBul = locSelWep.bulletType.GetComponent<BulletScript>();
 							}
 						}
-						if (locSelWep) {
+						if (locSelWep && locSelUnit) {
 							weaponInfo = "ANTI-"+locSelBul.damageType.ToUpper ()+", "+locSelHel.armorType.ToUpper();
 								if (locSelUnit.unitDisc.Length > 0) {
 								weaponInfo = weaponInfo + "\n\n"+locSelUnit.unitDisc;
@@ -479,10 +489,10 @@ public class GlobalManager : MonoBehaviour {
 								weaponInfo = weaponInfo +"\n\nDAMAGE: "+locSelWep.damage*locSelUnit.bDamage+" * "+locSelWep.amount
 								+"\nFIRERATE: "+(1/((Mathf.Max (1,locSelWep.transform.childCount))*(locSelWep.reloadTime*locSelUnit.bFirerate))).ToString ()+" / SEC"
 									+"\nDPS: "+(locSelWep.damage*locSelWep.amount)/((Mathf.Max (1,locSelWep.transform.childCount))*(locSelWep.reloadTime*locSelUnit.bFirerate))
-									+"\nRANGE: "+locSelWep.range*locSelUnit.bRange+"\n";
+									+"\nRANGE: "+locSelWep.range*locSelUnit.bRange+"\n"
+									+"\nHULL: "+locSelHel.health+" / "+locSelHel.maxHealth;
 							if (mouseFocUnit == null) {
 								weaponInfo = weaponInfo
-									+"\nHULL: "+locSelHel.health+" / "+locSelHel.maxHealth
 									+"\nEXP: "+locSelUnit.experience+" / "+locSelUnit.expNeeded
 									+"\nLEVEL: "+locSelUnit.level+"\n";
 							}
@@ -511,8 +521,8 @@ public class GlobalManager : MonoBehaviour {
 						}else{
 							weaponInfo = "PASSIVE, "+locSelHel.armorType.ToUpper()+"\n\n"+locSelUnit.unitDisc.ToUpper();
 						}
-						GUI.Box (new Rect (Screen.width-infoScreenSize+10,buttonSize+20,infoScreenSize-20,Screen.height-buttonSize-105),"");
-						GUI.Label (new Rect(Screen.width-infoScreenSize+15,buttonSize+22,infoScreenSize-25,Screen.height-buttonSize-100),weaponInfo);
+						GUI.Box (new Rect (Screen.width-infoScreenSize+10,buttonSize+20,infoScreenSize-20,Screen.height-(minimapSize+5)),"");
+						GUI.Label (new Rect(Screen.width-infoScreenSize+15,buttonSize+22,infoScreenSize-25,Screen.height-minimapSize),weaponInfo);
 					}
 				}
 				if (localPlayer.selectedCount != 1) {
@@ -558,6 +568,21 @@ public class GlobalManager : MonoBehaviour {
 			}
 			if (GUI.Button (new Rect(Screen.width/2-sw/2+10,sh*4-bd/buttons*4+bd,sw-20,sh-bd-bd/buttons),"QUIT")) {
 				Application.LoadLevel ("ca_menu");
+			}
+		}
+		if (enableRadar) {
+			GUI.Box (new Rect(Screen.width-minimapSize,Screen.height-minimapSize,minimapSize,minimapSize),"");
+			GUI.Box (new Rect(Screen.width-minimapSize+5,Screen.height-minimapSize+5,minimapSize-10,minimapSize-10),"",skin.customStyles[4]);
+			float cameraSizeX = Camera.main.orthographicSize*Camera.main.aspect;
+			float minimapSizeFactor = Mathf.Min(((minimapSize-10)/map.mapWidth),((minimapSize-10)/map.mapHeight));
+			Vector2 minimapOrigin = new Vector2 ((Screen.width)-minimapSize*0.5f,(Screen.height)-minimapSize*0.5f);
+			GameObject[] dots = GameObject.FindGameObjectsWithTag ("RadarDot");
+			float camPosX = (minimapOrigin.x+(Camera.main.transform.position.x+cameraSizeX)*minimapSizeFactor/2);
+			GUI.Box (new Rect(camPosX,minimapOrigin.y-(Camera.main.transform.position.y+Camera.main.orthographicSize)*minimapSizeFactor/2,-Camera.main.orthographicSize*Camera.main.aspect*minimapSizeFactor,Camera.main.orthographicSize*minimapSizeFactor),"",skin.customStyles[7]);
+			for (int i=0;i<dots.Length;i++) {
+				if (IsInsideBattlefield (new Vector2 (dots[i].transform.position.x,dots[i].transform.position.y))) {
+					GUI.Box (new Rect(minimapOrigin.x+(((dots[i].transform.position.x-dots[i].transform.localScale.x)/2)*minimapSizeFactor),minimapOrigin.y-((dots[i].transform.position.y+dots[i].transform.localScale.y)/2)*minimapSizeFactor,dots[i].transform.localScale.x*minimapSizeFactor,dots[i].transform.localScale.y*minimapSizeFactor),"",skin.customStyles[int.Parse (dots[i].name)+5]);
+				}
 			}
 		}
 	}

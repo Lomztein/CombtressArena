@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviour {
 	public LayerMask freindlyLayer;
 	public int population;
 
+	public GameObject radar;
+
 	// Use this for initialization
 	void Start () {
 		manager = GameObject.FindGameObjectWithTag("Stats").GetComponent<GlobalManager>();
@@ -122,6 +124,9 @@ public class PlayerController : MonoBehaviour {
 								newPurchasePrefab = selectedPurchaseOption;
 							}
 							GameObject purchase = (GameObject)Instantiate(newPurchasePrefab,focusPoint,Quaternion.identity);
+							if (newPurchasePrefab.name == "Radar") {
+								radar = purchase;
+							}
 							population++;
 							Unit newU = purchase.GetComponent<Unit>();
 							if (purchaseUnit.unitType != "structure") {
