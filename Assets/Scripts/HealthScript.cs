@@ -24,8 +24,10 @@ public class HealthScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (unit.manager) {
-			value = unit.income * unit.manager.creditsMultiplier;
+		if (unit) {
+			if (unit.manager) {
+				value = unit.income * unit.manager.creditsMultiplier;
+			}
 		}
 		if (health <= 0 && invincible == false) {
 			Destroy(gameObject);

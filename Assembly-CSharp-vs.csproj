@@ -46,6 +46,8 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\BoostTowerController.cs" />
+     <Compile Include="Assets\BoostWaveScript.cs" />
      <Compile Include="Assets\Scripts\AirstrikeBombScript.cs" />
      <Compile Include="Assets\Scripts\BlastBulletScript.cs" />
      <Compile Include="Assets\Scripts\BotInput.cs" />
@@ -72,6 +74,7 @@
      <Compile Include="Assets\Scripts\PointerScript.cs" />
      <Compile Include="Assets\Scripts\ProducingStructure.cs" />
      <Compile Include="Assets\Scripts\PurchaseableStructure.cs" />
+     <Compile Include="Assets\Scripts\RadarAnimation.cs" />
      <Compile Include="Assets\Scripts\SkirmishMenuScript.cs" />
      <Compile Include="Assets\Scripts\StrikejetController.cs" />
      <Compile Include="Assets\Scripts\TargetFinder.cs" />
@@ -81,6 +84,7 @@
      <Compile Include="Assets\Scripts\WeaponPickupScript.cs" />
      <Compile Include="Assets\Scripts\WeaponScript.cs" />
      <Compile Include="Assets\Scripts\WeaponStatsScript.cs" />
+     <Compile Include="Assets\ShieldScript.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -276,6 +276,8 @@ public class Unit : MonoBehaviour {
 			Gizmos.DrawSphere (target.transform.position,0.25f);
 			Gizmos.DrawLine (transform.position,transform.position + velocity);
 		}
-		Gizmos.DrawWireSphere (transform.position,sprite.bounds.extents.magnitude/1.618f);
+		if (sprite) {
+			Gizmos.DrawWireSphere (transform.position,sprite.bounds.extents.magnitude/1.618f);
+		}
 	}
 }
