@@ -18,7 +18,6 @@ public class GlobalManager : MonoBehaviour {
 	public Texture2D[] vehButtons;
 	public Texture2D[] turButtons;
 	public Texture2D[] strButtons;
-
 	public GameObject[] activeButtons;
 	public Texture2D[] activeSprites;
 	
@@ -30,7 +29,6 @@ public class GlobalManager : MonoBehaviour {
 	public Vector3 mousePos;
 
 	public GUISkin skin;
-	public GUISkin insufficientButtonStyle;
 	Texture2D[] buttonSprites;
 	public Transform selectedUnitSprite;
 
@@ -50,6 +48,7 @@ public class GlobalManager : MonoBehaviour {
 	public float buttonDistance;
 	public float infoScreenSize;
 	public float minimapSize;
+	public float buttonAspect;
 
 	public int menuID;
 	public int menuOffset;
@@ -88,6 +87,9 @@ public class GlobalManager : MonoBehaviour {
 	public BoxCollider selCol;
 
 	public bool enableRadar;
+	public GameObject hudCam;
+
+	public string[] chat;
 
 	DataCarrierScript ds;
 
@@ -95,6 +97,7 @@ public class GlobalManager : MonoBehaviour {
 	void Start () {
 
 		map = GetComponent<MapManager>();
+		hudCam = GameObject.Find ("HudCamera");
 		GameObject dc = GameObject.Find ("DataCarrier");
 		if (dc) {
 			ds = dc.GetComponent<DataCarrierScript>();
@@ -235,7 +238,7 @@ public class GlobalManager : MonoBehaviour {
 			}
 			if (purchaseUnits[i].unitType == "vehicle") {
 				vehicles[vIndex] = purchaseables[i];
-				vehButtons[vIndex] = vehicles[vIndex].transform.FindChild ("Sprite").GetComponent<SpriteRenderer>().sprite.texture;
+				vehButtons[vIndex] = CombineVehicleTextures(purchaseables[i]);
 				vIndex++;
 			}
 			if (purchaseUnits[i].unitType == "structure") {
@@ -253,6 +256,50 @@ public class GlobalManager : MonoBehaviour {
 		}
 
 		UpdateMenu (infantry,infButtons);
+	}
+
+	Texture2D CombineVehicleTextures (GameObject vehicle) {
+		Unit locUnit = vehicle.GetComponent<Unit>();
+		SpriteRenderer uSprite = locUnit.transform.FindChild ("Sprite").GetComponent<SpriteRenderer>();
+		SpriteRenderer wSprite = null;
+		Transform wSpriteGO = locUnit.newWeapon.transform.FindChild ("Sprite");
+		if (wSpriteGO) {
+			wSprite = wSpriteGO.GetComponent<SpriteRenderer>();
+		}else{
+			return uSprite.sprite.texture;
+		}
+		Vector2 size = new Vector2 (uSprite.sprite.texture.width,uSprite.sprite.texture.height);
+		Texture2D newTexture = new Texture2D((int)size.x,(int)size.y);
+		int weaponPosX = 0;
+		int weaponPosY = 0;
+		if (locUnit.weaponPos) {
+			weaponPosX = (uSprite.sprite.texture.width/2)-(wSprite.sprite.texture.width/2)+Mathf.RoundToInt(locUnit.weaponPos.position.x * 16) + Mathf.RoundToInt (wSprite.bounds.center.x*16);
+			weaponPosY = (uSprite.sprite.texture.height/2)-(wSprite.sprite.texture.height/2)+Mathf.RoundToInt(locUnit.weaponPos.position.y * 16) + Mathf.RoundToInt (wSprite.bounds.center.y*16);
+		}
+		newTexture.SetPixels(uSprite.sprite.texture.GetPixels());
+		Rect rect = new Rect(weaponPosX,weaponPosY,wSprite.sprite.texture.width,wSprite.sprite.texture.height);
+
+		for (int x=(int)rect.x;x<(int)rect.x+(int)rect.width;x++) {
+			for (int y=(int)rect.y;y<(int)rect.y+(int)rect.height;y++) {
+				Color newColor = (wSprite.sprite.texture.GetPixel(x-(int)rect.x,y-(int)rect.y));
+				if (Mathf.RoundToInt(newColor.a) == 1) {
+					newTexture.SetPixel (x,y,wSprite.sprite.texture.GetPixel(x-(int)rect.x,y-(int)rect.y));
+				}
+			}
+		}
+
+		newTexture.filterMode = FilterMode.Point;
+		newTexture.Apply();
+		return newTexture;
+	}
+
+	public void GetChat (string s) {
+		string[] cm = chat;
+		chat = new string[chat.Length+1];
+		for (int i=0;i<cm.Length;i++) {
+			chat[i] = cm[i];
+		}
+		chat[chat.Length] = s;
 	}
 
 	void UpdateMenu (GameObject[] newMenu, Texture2D[] newTextures) {
@@ -341,7 +388,7 @@ public class GlobalManager : MonoBehaviour {
 					SpriteRenderer locSprite = selectedUnitSprite.GetComponent<SpriteRenderer>();
 					Color newColor = Color.green;
 					selectedUnitSprite.position = new Vector3 (mousePos.x,mousePos.y,0);
-					if (Physics.CheckSphere (new Vector3(mousePos.x,mousePos.y,0),1,localPlayer.freindlyLayer)) {
+					if (localPlayer.CanPlace(locUnit,mousePos) == false ) {
 						newColor = Color.red;
 					}
 					if (IsInsideBattlefield (mousePos) == false) {
@@ -419,15 +466,23 @@ public class GlobalManager : MonoBehaviour {
 				}
 				if (GUI.Button (new Rect(10,Screen.height - buttonSize - 55,buttonSize*2,buttonSize/2),"INFANTRY")) {
 					UpdateMenu (infantry,infButtons);
+					buttonAspect = 1;
+					menuOffset = 0;
 				}
 				if (GUI.Button (new Rect(10+buttonSize*2+buttonDistance,Screen.height - buttonSize - 55,buttonSize*2,buttonSize/2),"VEHICLES")) {
 					UpdateMenu (vehicles,vehButtons);
+					buttonAspect = 0.75f;
+					menuOffset = 0;
 				}
 				if (GUI.Button (new Rect(10+(buttonSize*2+buttonDistance)*2,Screen.height - buttonSize - 55,buttonSize*2,buttonSize/2),"TURRETS")) {
 					UpdateMenu (turrets,turButtons);
+					buttonAspect = 0.75f;
+					menuOffset = 0;
 				}
 				if (GUI.Button (new Rect(10+(buttonSize*2+buttonDistance)*3,Screen.height - buttonSize - 55,buttonSize*2,buttonSize/2),"STRUCTURES")) {
 					UpdateMenu (structures,strButtons);
+					buttonAspect = 0.75f;
+					menuOffset = 0;
 				}
 				bool anyContainsMouse = false;
 				for (int i=0;i<activeButtons.Length;i++) {
@@ -443,7 +498,7 @@ public class GlobalManager : MonoBehaviour {
 					}else{
 						GUI.Box (rect,new GUIContent("",newU.unitName.ToUpper () + ", COST: " + newU.cost + ", INSUFFICIENT CREDITS"));
 					}
-					GUI.DrawTexture (rect,activeSprites[i],ScaleMode.ScaleToFit,true,1);
+					GUI.DrawTexture (new Rect ((float)menuOffset + 10 + (buttonSize*(1-buttonAspect)/2) + i * (buttonSize + buttonDistance),Screen.height - buttonSize-10+(buttonSize*(1-buttonAspect)/2),buttonSize*buttonAspect,buttonSize*buttonAspect),activeSprites[i],ScaleMode.ScaleToFit,true,0f);
 					if (rect.Contains(new Vector2 (Input.mousePosition.x,Screen.height-Input.mousePosition.y))) {
 						mouseFocUnit = activeButtons[i];
 						anyContainsMouse = true;
@@ -482,7 +537,7 @@ public class GlobalManager : MonoBehaviour {
 						if (locSelWep && locSelUnit) {
 							weaponInfo = "ANTI-"+locSelBul.damageType.ToUpper ()+", "+locSelHel.armorType.ToUpper();
 								if (locSelUnit.unitDisc.Length > 0) {
-								weaponInfo = weaponInfo + "\n\n"+locSelUnit.unitDisc;
+								weaponInfo = weaponInfo + "\n\n"+locSelUnit.unitDisc.ToUpper ();
 							}else{
 								weaponInfo = weaponInfo + "\n\nTHIS UNIT LACKS A DESCRIPTION, GET ON IT YOU LAZY DEVS!";
 							}
@@ -519,7 +574,13 @@ public class GlobalManager : MonoBehaviour {
 								}
 							}
 						}else{
-							weaponInfo = "PASSIVE, "+locSelHel.armorType.ToUpper()+"\n\n"+locSelUnit.unitDisc.ToUpper();
+							weaponInfo = "PASSIVE, "+locSelHel.armorType.ToUpper()+"\n\n"+locSelUnit.unitDisc.ToUpper()
+							+"\nHULL: "+locSelHel.health+" / "+locSelHel.maxHealth;
+							if (mouseFocUnit == null) {
+								weaponInfo = weaponInfo
+									+"\nEXP: "+locSelUnit.experience+" / "+locSelUnit.expNeeded
+									+"\nLEVEL: "+locSelUnit.level+"\n";
+							}
 						}
 						GUI.Box (new Rect (Screen.width-infoScreenSize+10,buttonSize+20,infoScreenSize-20,Screen.height-(minimapSize+5)),"");
 						GUI.Label (new Rect(Screen.width-infoScreenSize+15,buttonSize+22,infoScreenSize-25,Screen.height-minimapSize),weaponInfo);
@@ -572,12 +633,18 @@ public class GlobalManager : MonoBehaviour {
 		}
 		if (enableRadar) {
 			GUI.Box (new Rect(Screen.width-minimapSize,Screen.height-minimapSize,minimapSize,minimapSize),"");
-			GUI.Box (new Rect(Screen.width-minimapSize+5,Screen.height-minimapSize+5,minimapSize-10,minimapSize-10),"",skin.customStyles[4]);
 			float cameraSizeX = Camera.main.orthographicSize*Camera.main.aspect;
 			float minimapSizeFactor = Mathf.Min(((minimapSize-10)/map.mapWidth),((minimapSize-10)/map.mapHeight));
 			Vector2 minimapOrigin = new Vector2 ((Screen.width)-minimapSize*0.5f,(Screen.height)-minimapSize*0.5f);
 			GameObject[] dots = GameObject.FindGameObjectsWithTag ("RadarDot");
 			float camPosX = (minimapOrigin.x+(Camera.main.transform.position.x+cameraSizeX)*minimapSizeFactor/2);
+			Rect rect = new Rect(Screen.width-minimapSize+5,Screen.height-minimapSize+5,minimapSize-10,minimapSize-10);
+			GUI.Box (rect,"",skin.customStyles[4]);
+			float actualSizeFactor = Mathf.Min(((minimapSize)/map.mapWidth),((minimapSize)/map.mapHeight))/2;
+			if (rect.Contains(new Vector3(Input.mousePosition.x,-Input.mousePosition.y+Screen.height,0)) && Input.GetButton("Fire2")) {
+				Vector2 newPos = (new Vector2 (Input.mousePosition.x,-Input.mousePosition.y+Screen.height)-minimapOrigin);
+				Camera.main.transform.position = new Vector2(newPos.x,-newPos.y)/actualSizeFactor;
+			}
 			GUI.Box (new Rect(camPosX,minimapOrigin.y-(Camera.main.transform.position.y+Camera.main.orthographicSize)*minimapSizeFactor/2,-Camera.main.orthographicSize*Camera.main.aspect*minimapSizeFactor,Camera.main.orthographicSize*minimapSizeFactor),"",skin.customStyles[7]);
 			for (int i=0;i<dots.Length;i++) {
 				if (IsInsideBattlefield (new Vector2 (dots[i].transform.position.x,dots[i].transform.position.y))) {

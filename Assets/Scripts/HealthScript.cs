@@ -14,6 +14,10 @@ public class HealthScript : MonoBehaviour {
 	public Unit lastHit;
 	public Unit unit;
 
+	public GameObject healthBar;
+	public SpriteRenderer fullBar;
+	public SpriteRenderer curBar;
+
 	// Use this for initialization
 	void Start () {
 		unit = GetComponent<Unit>();
@@ -31,6 +35,7 @@ public class HealthScript : MonoBehaviour {
 		}
 		if (health <= 0 && invincible == false) {
 			Destroy(gameObject);
+			if (debris) { Instantiate (debris,transform.position,Quaternion.identity); }
 			if (lastHit) {
 				if (lastHit.playerIndex >= 0) {
 					lastHit.manager.credits[lastHit.playerIndex] += value;

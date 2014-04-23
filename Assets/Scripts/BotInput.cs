@@ -153,7 +153,7 @@ public class BotInput : MonoBehaviour {
 			for (int i=0;i<units.Length;i++) {
 				if (units[i]) {
 					Unit locUnit = units[i].GetComponent<Unit>();
-					if (locUnit.unitType == "structure" && locUnit.teamIndex == input.teamIndex) {
+					if (locUnit.unitType == "structure" && locUnit.playerIndex == input.id) {
 						if (tryingUnit.cost > locUnit.cost) {
 							if (cheapestCost > locUnit.cost) {
 								cheapestCost = locUnit.cost;

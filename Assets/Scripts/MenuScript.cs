@@ -41,7 +41,9 @@ public class MenuScript : MonoBehaviour {
 			if (GUI.Button (new Rect(Screen.width/3+40,20,Screen.width/3,30),"SKIRMISH")) {
 				Application.LoadLevel("ca_menu_skirmish");
 			}
-			GUI.Box (new Rect(Screen.width/3+40,60,Screen.width/3,30),"MULTIPLAYER - NYI");
+			if (GUI.Button (new Rect(Screen.width/3+40,60,Screen.width/3,30),"MULTIPLAYER - WIP")) {
+				Application.LoadLevel("ca_menu_skirmish");
+			}
 		}
 	}
 }

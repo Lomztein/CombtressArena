@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour {
 
 	public Vector3 focusPoint;
 	public Unit focusUnit;
-	public Transform pointer;
 	public GameObject selectedPurchaseOption;
 	public Vector3 mousePos;
 	public GlobalManager manager;
@@ -35,7 +34,6 @@ public class PlayerController : MonoBehaviour {
 	void Start () {
 		manager = GameObject.FindGameObjectWithTag("Stats").GetComponent<GlobalManager>();
 		map = manager.GetComponent<MapManager>();
-		pointer = GameObject.Find ("Pointer").transform;
 		freindlyFortresses = new GameObject[map.fortressAmount];
 		int fortressIndex = 0;
 		for (int i=0;i<map.fortressAmount*2;i++) {
@@ -95,8 +93,7 @@ public class PlayerController : MonoBehaviour {
 	
 	void Update() {
 		if (botControlled == false) {
-			pointer.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) + Vector3.forward;
-			focusPoint = new Vector3(pointer.position.x,pointer.position.y,0);
+			focusPoint = new Vector3(mousePos.x,mousePos.y,0);
 			if (Input.GetButtonDown ("Fire1") && manager.tooltip.Length == 0) {
 				PlacePurchase();
 			}
@@ -105,15 +102,31 @@ public class PlayerController : MonoBehaviour {
 		mousePos = new Vector3 (mp.x,mp.y,0);
 	}
 
+	public bool CanPlace (Unit u, Vector3 pos) {
+		Collider[] nearby = Physics.OverlapSphere(pos,1,freindlyLayer);
+		if (nearby.Length > 0) {
+			if (nearby.Length == 1) {
+				if (nearby[0].gameObject.tag == "Shield") {
+					return true;
+				}
+			}else{
+				return false;
+			}
+		}else{
+			return true;
+		}
+		return false;
+	}
+
 	// Update is called once per frame
 	public int PlacePurchase () {
 		int error = 0;
 		GetNearestFortress();
 		if (selectedPurchaseOption) {
+			Unit purchaseUnit = selectedPurchaseOption.GetComponent<Unit>();
 			if (population < manager.maxPopulation) {
-				if (!Physics.CheckSphere(focusPoint,1,freindlyLayer) && nearestFortress) {
+				if (CanPlace (purchaseUnit,focusPoint) && nearestFortress) {
 					if (manager.IsInsideBattlefield (focusPoint) && Vector3.Distance (focusPoint,nearestFortress.position) < map.fRange) {
-						Unit purchaseUnit = selectedPurchaseOption.GetComponent<Unit>();
 						int cost = purchaseUnit.cost;
 						if (manager.credits[id] >= cost) {
 							manager.credits[id] -= cost;

@@ -1,0 +1,303 @@
+Initialize engine version: 4.3.4f1 (e444f76e01cd)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 9.0c [nvd3dum.dll 9.18.13.3221]
+    Renderer: NVIDIA GeForce GTX 680
+    Vendor:   NVIDIA
+    VRAM:     1990 MB (via DXGI)
+    Caps:     Shader=30 DepthRT=1 NativeDepth=1 NativeShadow=1 DF16=0 INTZ=1 RAWZ=0 NULL=1 RESZ=0 SlowINTZ=0
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Lomztein\Documents\GitHub\CombtressArena\Compiled\CombtressArena_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Lomztein\Documents\GitHub\CombtressArena\Compiled\CombtressArena_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Lomztein\Documents\GitHub\CombtressArena\Compiled\CombtressArena_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Lomztein\Documents\GitHub\CombtressArena\Compiled\CombtressArena_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+- Completed reload, in  0.048 seconds
+desktop: 1920x1080 60Hz; virtual: 3200x1080 at -1280,0
+<RI> Initializing input.
+<RI> Input initialized.
+Initialize engine version: 4.3.4f1 (e444f76e01cd)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 9.0c [nvd3dum.dll 9.18.13.3221]
+    Renderer: NVIDIA GeForce GTX 680
+    Vendor:   NVIDIA
+    VRAM:     1990 MB (via DXGI)
+    Caps:     Shader=30 DepthRT=1 NativeDepth=1 NativeShadow=1 DF16=0 INTZ=1 RAWZ=0 NULL=1 RESZ=0 SlowINTZ=0
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Lomztein\Documents\GitHub\CombtressArena\Compiled\CombtressArena_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Lomztein\Documents\GitHub\CombtressArena\Compiled\CombtressArena_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Lomztein\Documents\GitHub\CombtressArena\Compiled\CombtressArena_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Lomztein\Documents\GitHub\CombtressArena\Compiled\CombtressArena_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+- Completed reload, in  0.060 seconds
+desktop: 1920x1080 60Hz; virtual: 3200x1080 at -1280,0
+<RI> Initializing input.
+<RI> Input initialized.
+UnloadTime: 0.395429 ms
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 6 unused Assets to reduce memory usage. Loaded Objects now: 172.
+Total: 1.634241 ms (FindLiveObjects: 0.020224 ms CreateObjectMapping: 0.012376 ms MarkObjects: 0.219146 ms  DeleteObjects: 0.015696 ms)
+
+Server initialized!
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Player spawned!
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Registration succeded!
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+UnloadTime: 0.342907 ms
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 6 unused Assets to reduce memory usage. Loaded Objects now: 172.
+Total: 1.565117 ms (FindLiveObjects: 0.014187 ms CreateObjectMapping: 0.012677 ms MarkObjects: 0.210090 ms  DeleteObjects: 0.014790 ms)
+
+New player joined on IP: 192.168.1.198, 192.168.1.198
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Connected to server!
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Player spawned!
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Player spawned!
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Send position: 1
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Player spawned!
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Recieved starting position: 1
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Initialize engine version: 4.3.4f1 (e444f76e01cd)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 9.0c [nvd3dum.dll 9.18.13.3221]
+    Renderer: NVIDIA GeForce GTX 680
+    Vendor:   NVIDIA
+    VRAM:     1990 MB (via DXGI)
+    Caps:     Shader=30 DepthRT=1 NativeDepth=1 NativeShadow=1 DF16=0 INTZ=1 RAWZ=0 NULL=1 RESZ=0 SlowINTZ=0
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Lomztein\Documents\GitHub\CombtressArena\Compiled\CombtressArena_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Lomztein\Documents\GitHub\CombtressArena\Compiled\CombtressArena_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Lomztein\Documents\GitHub\CombtressArena\Compiled\CombtressArena_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Lomztein\Documents\GitHub\CombtressArena\Compiled\CombtressArena_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+- Completed reload, in  0.067 seconds
+desktop: 1920x1080 60Hz; virtual: 3200x1080 at -1280,0
+<RI> Initializing input.
+<RI> Input initialized.
+Registration succeded!
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+UnloadTime: 0.348944 ms
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 6 unused Assets to reduce memory usage. Loaded Objects now: 172.
+Total: 1.616432 ms (FindLiveObjects: 0.014790 ms CreateObjectMapping: 0.012376 ms MarkObjects: 0.251143 ms  DeleteObjects: 0.015696 ms)
+
+New player joined on IP: 192.168.1.198, 192.168.1.198
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Connected to server!
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Player spawned!
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Player spawned!
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Player spawned!
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Send position: 2
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Player spawned!
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Player spawned!
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Recieved starting position: 2
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Registration succeded!
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Initialize engine version: 4.3.4f1 (e444f76e01cd)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 9.0c [nvd3dum.dll 9.18.13.3221]
+    Renderer: NVIDIA GeForce GTX 680
+    Vendor:   NVIDIA
+    VRAM:     1990 MB (via DXGI)
+    Caps:     Shader=30 DepthRT=1 NativeDepth=1 NativeShadow=1 DF16=0 INTZ=1 RAWZ=0 NULL=1 RESZ=0 SlowINTZ=0
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Lomztein\Documents\GitHub\CombtressArena\Compiled\CombtressArena_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Lomztein\Documents\GitHub\CombtressArena\Compiled\CombtressArena_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Lomztein\Documents\GitHub\CombtressArena\Compiled\CombtressArena_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Lomztein\Documents\GitHub\CombtressArena\Compiled\CombtressArena_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+- Completed reload, in  0.070 seconds
+desktop: 1920x1080 60Hz; virtual: 3200x1080 at -1280,0
+<RI> Initializing input.
+<RI> Input initialized.
+UnloadTime: 0.343812 ms
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 6 unused Assets to reduce memory usage. Loaded Objects now: 172.
+Total: 1.722987 ms (FindLiveObjects: 0.014790 ms CreateObjectMapping: 0.012677 ms MarkObjects: 0.218844 ms  DeleteObjects: 0.016903 ms)
+
+New player joined on IP: 192.168.1.198, 192.168.1.198
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Connected to server!
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Player spawned!
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Player spawned!
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Player spawned!
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Player spawned!
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Send position: 3
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Player spawned!
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Recieved stPrting positlon: 3
+ 
+(Filename: C:/BuildAgent/aorPrlayd3d495awned408f4/a
+rt
+r scpnawened!a
+lo
+uiileaenee/ rw/nkBd3ldeAg5e8tyEngifw/Drtifa.cos/rk/Sd3and
+4alonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+9558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Registration succeded!
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Player 192.168.1.198 left, cleaning up.
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Lost connection to server
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Registration succeded!
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+UnloadTime: 0.354981 ms
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 5 unused Assets to reduce memory usage. Loaded Objects now: 185.
+Total: 1.551835 ms (FindLiveObjects: 0.013885 ms CreateObjectMapping: 0.012376 ms MarkObjects: 0.223976 ms  DeleteObjects: 0.015696 ms)
+
+UnloadTime: 0.283441 ms
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 5 unused Assets to reduce memory usage. Loaded Objects now: 163.
+Total: 1.187798 ms (FindLiveObjects: 0.008753 ms CreateObjectMapping: 0.009659 ms MarkObjects: 0.177188 ms  DeleteObjects: 0.011772 ms)
+
+Lost connection to server
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacPs/StaldalonePlayerGenerated/UnityEngayer 192.168 L.198 le3)t,
+ 
+cleaning up.
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+UnloadTime: 0.369168 ms
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 5 unused Assets to reduce memory usage. Loaded Objects now: 185.
+Total: 1.568739 ms (FindLiveObjects: 0.014790 ms CreateObjectMapping: 0.012979 ms MarkObjects: 0.231220 ms  DeleteObjects: 0.015092 ms)
+
+UnloadTime: 0.346529 ms
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 5 unused Assets to reduce memory usage. Loaded Objects now: 163.
+Total: 1.678916 ms (FindLiveObjects: 0.011772 ms CreateObjectMapping: 0.012074 ms MarkObjects: 0.234239 ms  DeleteObjects: 0.015394 ms)
+
+Lost connection to server
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Player 192.168.1.198 left, cleaning up.
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+UnloadTime: 0.359509 ms
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 5 unused Assets to reduce memory usage. Loaded Objects now: 185.
+Total: 1.583530 ms (FindLiveObjects: 0.014489 ms CreateObjectMapping: 0.012979 ms MarkObjects: 0.237559 ms  DeleteObjects: 0.017205 ms)
+
+UnloadTime: 0.324795 ms
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 5 unused Assets to reduce memory usage. Loaded Objects now: 163.
+Total: 1.556061 ms (FindLiveObjects: 0.011470 ms CreateObjectMapping: 0.012074 ms MarkObjects: 0.225183 ms  DeleteObjects: 0.014790 ms)
+
+Lost connection to server
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+UnloadTime: 0.367055 ms
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 5 unused Assets to reduce memory usage. Loaded Objects now: 189.
+Total: 1.616130 ms (FindLiveObjects: 0.014790 ms CreateObjectMapping: 0.012979 ms MarkObjects: 0.231522 ms  DeleteObjects: 0.015092 ms)
+
+UnloadTime: 0.324795 ms
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 5 unused Assets to reduce memory usage. Loaded Objects now: 163.
+Total: 1.789999 ms (FindLiveObjects: 0.011470 ms CreateObjectMapping: 0.012074 ms MarkObjects: 0.218542 ms  DeleteObjects: 0.015092 ms)
+

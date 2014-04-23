@@ -19,7 +19,7 @@
 	<DebugType>full</DebugType>
 	<Optimize>false</Optimize>
 	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_GENERICS;ENABLE_SUBSTANCE;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;UNITY_4_3_0;UNITY_4_3;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN</DefineConstants>
+	<DefineConstants>DEBUG;TRACE;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_GENERICS;ENABLE_SUBSTANCE;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;UNITY_4_3_4;UNITY_4_3;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN</DefineConstants>
 	<ErrorReport>prompt</ErrorReport>
 	<WarningLevel>4</WarningLevel>
 	<NoWarn>0169</NoWarn>
@@ -46,10 +46,14 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\BoostTowerController.cs" />
-     <Compile Include="Assets\BoostWaveScript.cs" />
+     <Compile Include="Assets\Network\NetworkInput.cs" />
+     <Compile Include="Assets\Network\NetworkMenu.cs" />
+     <Compile Include="Assets\Network\SkirmishMenuPlayer.cs" />
      <Compile Include="Assets\Scripts\AirstrikeBombScript.cs" />
      <Compile Include="Assets\Scripts\BlastBulletScript.cs" />
+     <Compile Include="Assets\Scripts\BombScript.cs" />
+     <Compile Include="Assets\Scripts\BoostTowerController.cs" />
+     <Compile Include="Assets\Scripts\BoostWaveScript.cs" />
      <Compile Include="Assets\Scripts\BotInput.cs" />
      <Compile Include="Assets\Scripts\BotManager.cs" />
      <Compile Include="Assets\Scripts\BulletScript.cs" />
@@ -60,31 +64,34 @@
      <Compile Include="Assets\Scripts\GlobalManager.cs" />
      <Compile Include="Assets\Scripts\GranadeScript.cs" />
      <Compile Include="Assets\Scripts\GroundVehicleController.cs" />
+     <Compile Include="Assets\Scripts\HealthBarScript.cs" />
      <Compile Include="Assets\Scripts\HealthScript.cs" />
      <Compile Include="Assets\Scripts\HomingBullet.cs" />
      <Compile Include="Assets\Scripts\InfantryController.cs" />
      <Compile Include="Assets\Scripts\LaserBullet.cs" />
      <Compile Include="Assets\Scripts\MapManager.cs" />
      <Compile Include="Assets\Scripts\MenuScript.cs" />
-     <Compile Include="Assets\Scripts\NetworkInput.cs" />
-     <Compile Include="Assets\Scripts\NetworkManager.cs" />
+     <Compile Include="Assets\Scripts\MineController.cs" />
+     <Compile Include="Assets\Scripts\MineFactoryController.cs" />
+     <Compile Include="Assets\Scripts\MinePlacementScript.cs" />
      <Compile Include="Assets\Scripts\ParticleScript.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
      <Compile Include="Assets\Scripts\PlayerInput.cs" />
-     <Compile Include="Assets\Scripts\PointerScript.cs" />
      <Compile Include="Assets\Scripts\ProducingStructure.cs" />
      <Compile Include="Assets\Scripts\PurchaseableStructure.cs" />
      <Compile Include="Assets\Scripts\RadarAnimation.cs" />
+     <Compile Include="Assets\Scripts\ShieldGeneratorController.cs" />
+     <Compile Include="Assets\Scripts\SkirmishMenuNetworkSync.cs" />
      <Compile Include="Assets\Scripts\SkirmishMenuScript.cs" />
      <Compile Include="Assets\Scripts\StrikejetController.cs" />
      <Compile Include="Assets\Scripts\TargetFinder.cs" />
+     <Compile Include="Assets\Scripts\TeslaBeamScript.cs" />
      <Compile Include="Assets\Scripts\TurretController.cs" />
      <Compile Include="Assets\Scripts\Unit.cs" />
      <Compile Include="Assets\Scripts\UnitManager.cs" />
      <Compile Include="Assets\Scripts\WeaponPickupScript.cs" />
      <Compile Include="Assets\Scripts\WeaponScript.cs" />
      <Compile Include="Assets\Scripts\WeaponStatsScript.cs" />
-     <Compile Include="Assets\ShieldScript.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

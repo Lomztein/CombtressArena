@@ -1,15 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\GlobalManager.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\SkirmishMenuScript.cs">
     <Files>
-      <File FileName="Assets\Scripts\RadarAnimation.cs" Line="14" Column="4" />
-      <File FileName="Assets\BoostWaveScript.cs" Line="41" Column="4" />
-      <File FileName="Assets\Scripts\BlastBulletScript.cs" Line="23" Column="64" />
-      <File FileName="Assets\BoostTowerController.cs" Line="31" Column="23" />
-      <File FileName="Assets\Scripts\PlayerController.cs" Line="127" Column="4" />
-      <File FileName="Assets\Scripts\HealthScript.cs" Line="45" Column="1" />
-      <File FileName="Assets\Scripts\GlobalManager.cs" Line="479" Column="9" />
-      <File FileName="Assets\Scripts\TargetFinder.cs" Line="51" Column="1" />
+      <File FileName="Assets\Network\SkirmishMenuPlayer.cs" Line="21" Column="3" />
+      <File FileName="Assets\Scripts\SkirmishMenuScript.cs" Line="89" Column="31" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

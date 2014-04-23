@@ -18,6 +18,7 @@ public class WeaponScript : MonoBehaviour {
 	public Transform[] muzzles;
 	public int muzzleIndex;
 	public float fireSequence;
+	public bool ignoreDirection;
 	GameObject bullet;
 
 	void Start () {
@@ -52,17 +53,23 @@ public class WeaponScript : MonoBehaviour {
 		Vector3 force = (muzzles[muzzleIndex].right * bulletSpeed * parent.bBulletSpeed * (Random.Range (90f,110f)/100f));
 		force += (muzzles[muzzleIndex].up * (Random.Range (-inaccuracy,inaccuracy)));
 		BulletScript bs = bullet.GetComponent<BulletScript>();
-		bs.velocity = force;
-		bs.damage = damage * parent.bDamage;
-		bs.parentChar = parent;
-		bs.range = range * parent.bRange;
-		bs.layer = parent.enemyLayer;
-		if (parent.target) { bs.target = parent.target.transform; }
+		if (bs) {
+			bs.velocity = force;
+			bs.damage = damage * parent.bDamage;
+			bs.parentChar = parent;
+			bs.range = range * parent.bRange;
+			bs.layer = parent.enemyLayer;
+			if (parent.target) { bs.target = parent.target.transform; }
+		}
+		BombScript bomb = bullet.GetComponent<BombScript>();
+		if (bomb) {
+			bomb.unit = parent;
+		}
 	}
 
 	public bool Fire () {
 		bool hasFired = false;
-		if (Mathf.Abs (Mathf.DeltaAngle (parent.directionToTarget,transform.rotation.eulerAngles.z)) < 10) {
+		if ((Mathf.Abs (Mathf.DeltaAngle (parent.directionToTarget,transform.rotation.eulerAngles.z)) < 10) || ignoreDirection) {
 			if (reloaded == true) {
 				reloaded = false;
 				Invoke("Reload",reloadTime * parent.bFirerate);

@@ -8,6 +8,7 @@ public class TargetFinder : MonoBehaviour {
 	public MapManager map;
 	public bool ignoreFortress;
 	public float maxHeight = 1;
+	public float minHeight = -2;
 
 	// Use this for initialization
 	void Start () {
@@ -28,8 +29,17 @@ public class TargetFinder : MonoBehaviour {
 				}
 			}
 		}
-		if (unit.distanceToTarget > unit.weaponRange && unit.targetOverride == null) {
+		if (unit.distanceToTarget >= unit.weaponRange && unit.targetOverride == null) {
 			FindTarget ();
+		}
+		if (unit.targetUnit) {
+			if (unit.targetUnit.tag != "Fortress") {
+				if (unit.targetUnit.height >= maxHeight || unit.targetUnit.height <= minHeight) {
+					Debug.Log ("Target was too high up",unit.targetUnit.gameObject);
+					unit.target = null;
+					unit.targetOverride = null;
+				}
+			}
 		}
 	}
 
@@ -43,12 +53,10 @@ public class TargetFinder : MonoBehaviour {
 				Unit otherU = other.GetComponent<Unit>();
 				float distance = Vector3.Distance (transform.position,other.transform.position);
 				if (otherU) {
-					if (distance < shortest && otherU.teamIndex != unit.teamIndex && otherU.height <= maxHeight) {
+					if (distance < shortest && otherU.teamIndex != unit.teamIndex && (otherU.height <= maxHeight && otherU.height >= minHeight)) {
 						shortest = distance;
 						closest = other;
 					}
-				}else{
-					Debug.LogWarning ("No 'Unit' class was found on possible target, layer trying to target: " + other.layer,other);
 				}
 			}
 		}

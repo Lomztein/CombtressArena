@@ -5,18 +5,32 @@ public class CameraScript : MonoBehaviour {
 
 	public float moveSpeed;
 	public float zoomSpeed;
-	public float gameSpeed;
 	public MapManager map;
+	public float standardSize;
+
+	public float minCamSize = 2;
+	public float maxCamSize;
+
+	public GameObject hudCam;
+	public Transform pointer;
+
+	static public Transform follow;
 
 	void Start () {
+		hudCam = GameObject.Find ("HudCamera");
 		map = GameObject.FindGameObjectWithTag("Stats").GetComponent<MapManager>();
+		standardSize = camera.orthographicSize;
+		maxCamSize = Mathf.Max (map.mapWidth,map.mapHeight);
+		if (map.mapWidth > map.mapHeight) {
+			maxCamSize /= Camera.main.aspect;
+		}
 	}
-	void OnGUI () {
-
-		Time.timeScale = gameSpeed;
+	void Update () {
 
 		Vector3 movement = Vector3.zero;
 		Vector3 mp = Input.mousePosition;
+		pointer.position = hudCam.camera.ScreenToWorldPoint(mp+Vector3.forward*5);
+		float zoom = Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
 		if (mp.x < 10) {
 			movement += Vector3.left * moveSpeed;
 		}
@@ -49,7 +63,18 @@ public class CameraScript : MonoBehaviour {
 			transform.position = new Vector3 (transform.position.x,-map.mapHeight,transform.position.z);
 			movement = new Vector3 (movement.x,0);
 		}
-		Camera.main.orthographicSize -= Input.GetAxis ("Mouse ScrollWheel") * zoomSpeed * Time.deltaTime;
-		Camera.main.transform.position += movement * Time.deltaTime;
+		if (Camera.main.orthographicSize - zoom * Time.deltaTime > maxCamSize) {
+			Camera.main.orthographicSize = maxCamSize;
+			zoom = 0;
+		}
+		if (Camera.main.orthographicSize - zoom * Time.deltaTime < minCamSize) {
+			Camera.main.orthographicSize = minCamSize;
+			zoom = 0;
+		}
+		Camera.main.orthographicSize -= zoom * Time.deltaTime * camera.orthographicSize/standardSize;
+		Camera.main.transform.position += movement * Time.deltaTime * camera.orthographicSize/standardSize;
+		if (follow) {
+			transform.position = new Vector3(follow.position.x,follow.position.y,transform.position.z);
+		}
 	}
 }

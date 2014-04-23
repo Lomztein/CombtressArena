@@ -15,6 +15,7 @@ public class BlastBulletScript : MonoBehaviour {
 		sprite = transform.FindChild ("Sprite").GetComponent<SpriteRenderer>();
 		transform.localScale = Vector3.one * startScale;
 		fadeSpeed = 1/bullet.time;
+		bullet.damage *= Time.fixedDeltaTime;
 	}
 	
 	// Update is called once per frame
@@ -24,7 +25,6 @@ public class BlastBulletScript : MonoBehaviour {
 	}
 
 	void OnTriggerStay (Collider other) {
-		Debug.Log ("shitnuggets");
 		bullet.Hit (other,transform.position,transform.rotation);
 	}
 }

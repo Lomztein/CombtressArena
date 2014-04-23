@@ -1,0 +1,4 @@
+<ListOfTask>
+  <Task file="" description="Remove player from list when he disconnects" />
+  <Task file="" description="Look into players not getting on list on every client" priority="High" />
+</ListOfTask>
