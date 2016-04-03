@@ -1,9 +1,11 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\SkirmishMenuScript.cs">
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\TargetFinder.cs">
     <Files>
-      <File FileName="Assets\Network\SkirmishMenuPlayer.cs" Line="21" Column="3" />
-      <File FileName="Assets\Scripts\SkirmishMenuScript.cs" Line="89" Column="31" />
+      <File FileName="Assets\Scripts\TargetFinder.cs" Line="40" Column="29" />
+      <File FileName="Assets\Scripts\Unit.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\WeaponScript.cs" Line="113" Column="1" />
+      <File FileName="Assets\Scripts\GlobalManager.cs" Line="49" Column="26" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

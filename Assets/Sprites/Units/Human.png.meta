@@ -1,6 +1,23 @@
 fileFormatVersion: 2
 guid: fa5c57a8800daa34da131fbff34c6259
 TextureImporter:
+  fileIDToRecycleName:
+    21300000: spr_humanWalking_strip16_0
+    21300002: spr_humanWalking_strip16_1
+    21300004: spr_humanWalking_strip16_2
+    21300006: spr_humanWalking_strip16_3
+    21300008: spr_humanWalking_strip16_4
+    21300010: spr_humanWalking_strip16_5
+    21300012: spr_humanWalking_strip16_6
+    21300014: spr_humanWalking_strip16_7
+    21300016: spr_humanWalking_strip16_8
+    21300018: spr_humanWalking_strip16_9
+    21300020: spr_humanWalking_strip16_10
+    21300022: spr_humanWalking_strip16_11
+    21300024: spr_humanWalking_strip16_12
+    21300026: spr_humanWalking_strip16_13
+    21300028: spr_humanWalking_strip16_14
+    21300030: spr_humanWalking_strip16_15
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -35,6 +52,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 16
   alphaIsTransparency: 1
   textureType: 5
@@ -50,6 +68,7 @@ TextureImporter:
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_humanWalking_strip16_1
       rect:
         serializedVersion: 2
@@ -59,6 +78,7 @@ TextureImporter:
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_humanWalking_strip16_2
       rect:
         serializedVersion: 2
@@ -68,6 +88,7 @@ TextureImporter:
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_humanWalking_strip16_3
       rect:
         serializedVersion: 2
@@ -77,6 +98,7 @@ TextureImporter:
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_humanWalking_strip16_4
       rect:
         serializedVersion: 2
@@ -86,6 +108,7 @@ TextureImporter:
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_humanWalking_strip16_5
       rect:
         serializedVersion: 2
@@ -95,6 +118,7 @@ TextureImporter:
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_humanWalking_strip16_6
       rect:
         serializedVersion: 2
@@ -104,6 +128,7 @@ TextureImporter:
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_humanWalking_strip16_7
       rect:
         serializedVersion: 2
@@ -113,6 +138,7 @@ TextureImporter:
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_humanWalking_strip16_8
       rect:
         serializedVersion: 2
@@ -122,6 +148,7 @@ TextureImporter:
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_humanWalking_strip16_9
       rect:
         serializedVersion: 2
@@ -131,6 +158,7 @@ TextureImporter:
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_humanWalking_strip16_10
       rect:
         serializedVersion: 2
@@ -140,6 +168,7 @@ TextureImporter:
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_humanWalking_strip16_11
       rect:
         serializedVersion: 2
@@ -149,6 +178,7 @@ TextureImporter:
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_humanWalking_strip16_12
       rect:
         serializedVersion: 2
@@ -158,6 +188,7 @@ TextureImporter:
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_humanWalking_strip16_13
       rect:
         serializedVersion: 2
@@ -167,6 +198,7 @@ TextureImporter:
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_humanWalking_strip16_14
       rect:
         serializedVersion: 2
@@ -176,6 +208,7 @@ TextureImporter:
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_humanWalking_strip16_15
       rect:
         serializedVersion: 2
@@ -185,5 +218,6 @@ TextureImporter:
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 

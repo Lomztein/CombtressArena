@@ -15,22 +15,22 @@ public class TargetFinder : MonoBehaviour {
 		map = GameObject.FindGameObjectWithTag("Stats").GetComponent<MapManager>();
 		unit = GetComponent<Unit>();
 		unit.GetLayers ();
-		FindTarget();
+		FindTarget(unit.weaponScript.bulletType.GetComponent<BulletScript>().damageType);
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
 		if (!unit.target) {
-			FindTarget();
+			FindTarget(unit.weaponScript.bulletType.GetComponent<BulletScript>().damageType);
 		}else{
 			if (unit.target.tag == "Fortress") {
 				if (Physics.CheckSphere (transform.position,unit.weaponRange,unit.enemyLayer)) {
-					FindTarget ();
+					FindTarget (unit.weaponScript.bulletType.GetComponent<BulletScript>().damageType);
 				}
 			}
 		}
 		if (unit.distanceToTarget >= unit.weaponRange && unit.targetOverride == null) {
-			FindTarget ();
+			FindTarget (unit.weaponScript.bulletType.GetComponent<BulletScript>().damageType);
 		}
 		if (unit.targetUnit) {
 			if (unit.targetUnit.tag != "Fortress") {
@@ -43,9 +43,10 @@ public class TargetFinder : MonoBehaviour {
 		}
 	}
 
-	public void FindTarget () {
+	public void FindTarget (string type) {
 		Collider[] near = Physics.OverlapSphere(transform.position,unit.weaponRange,unit.enemyLayer);
 		GameObject closest = null;
+		GameObject closestSpecific = null;
 		float shortest = float.MaxValue;
 		if (near.Length > 0) {
 			for (int i=0;i<near.Length;i++) {
@@ -56,9 +57,13 @@ public class TargetFinder : MonoBehaviour {
 					if (distance < shortest && otherU.teamIndex != unit.teamIndex && (otherU.height <= maxHeight && otherU.height >= minHeight)) {
 						shortest = distance;
 						closest = other;
+						if (otherU.health.armorType.Equals (type)) closestSpecific = other;
 					}
 				}
 			}
+		}
+		if (closestSpecific) {
+			closest = closestSpecific;
 		}
 		if (closest == null && ignoreFortress == false) {
 			for (int i=0;i<map.fortresses.Length;i++) {
