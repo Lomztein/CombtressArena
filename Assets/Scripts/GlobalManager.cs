@@ -129,7 +129,7 @@ public class GlobalManager : MonoBehaviour {
 				pc.playerName = localName;
 			}else{
 				pc.botControlled = true;
-				BotInput bot = pc.gameObject.AddComponent("BotInput").GetComponent<BotInput>();
+				BotInput bot = pc.gameObject.AddComponent<BotInput>().GetComponent<BotInput>();
 				bot.aiType = types[i];
 				bot.input = pc;
 				pc.playerName = names[i].ToUpper() + " - " + types[i].ToUpper() + " - " + " BOT";

@@ -13,6 +13,7 @@ public class Unit : MonoBehaviour {
 	public int teamIndex;
 	public int playerIndex;
 	public string teamName;
+    public bool isMobile = true;
 
 	public float height;
 	public float direction;
@@ -66,7 +67,7 @@ public class Unit : MonoBehaviour {
 		if (newWeapon && weapon == null) {
 			EquipWeapon ();
 		}
-		transform.position += -transform.forward * height;
+		transform.position += Vector3.down * height;
 		health = GetComponent<HealthScript>();
 		name = unitName + ", level " + level.ToString();
 		GameObject stats = GameObject.FindGameObjectWithTag("Stats");
@@ -260,6 +261,7 @@ public class Unit : MonoBehaviour {
 		}
 		if (tag == "Fortress") {
 			manager.TestFortresses();
+            ProducingStructure.placementNodes[teamIndex].Remove (this);
 		}
 		if (selectedSprite) {
 			DestroySelectionSprite();

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ProducingStructure : MonoBehaviour {
 
@@ -11,6 +12,8 @@ public class ProducingStructure : MonoBehaviour {
 	public bool overrideTime;
 	public Unit u;
 	float locIncome;
+
+    public static List<Unit>[] placementNodes;
 
 	// Use this for initialization
 	void Start () {
@@ -30,7 +33,39 @@ public class ProducingStructure : MonoBehaviour {
 		}
 		InvokeRepeating("CreateUnit",time,time);
 		u = GetComponent<Unit>();
+        placementNodes[u.teamIndex].Add (u);
 	}
+
+    void OnDestroy () {
+        placementNodes[u.teamIndex].Remove (u);
+    }
+
+    public static void InitPlacementNodesList () {
+        if (placementNodes == null) {
+            placementNodes = new List<Unit>[2];
+            for (int i = 0; i < placementNodes.Length; i++) {
+                placementNodes[i] = new List<Unit> ();
+            }
+        }
+    }
+
+    public static void SetFurthestFactory (int team) {
+
+        float depth = MapManager.cur.mapWidth;
+
+        for (int i = 0; i < placementNodes[team].Count; i++) {
+            float x = placementNodes[team][i].transform.position.x;
+            if (placementNodes[team][i].teamIndex == 1) {
+                x = -x;
+            }
+
+            if (x < depth) {
+                depth = x;
+            }
+        }
+
+        PlayerController.maxFactoryPlacementX[team] = depth;
+    }
 
 	void Update () {
 		locIncome += (float)income * Time.deltaTime;

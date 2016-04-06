@@ -30,6 +30,8 @@ public class PlayerController : MonoBehaviour {
 
 	public GameObject radar;
 
+    public static float[] maxFactoryPlacementX = new float[2];
+
 	// Use this for initialization
 	void Start () {
 		manager = GameObject.FindGameObjectWithTag("Stats").GetComponent<GlobalManager>();
@@ -121,12 +123,14 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	public int PlacePurchase () {
 		int error = 0;
+        float depth = teamIndex == 0 ? focusPoint.x : -focusPoint.x;
+
 		GetNearestFortress();
 		if (selectedPurchaseOption) {
 			Unit purchaseUnit = selectedPurchaseOption.GetComponent<Unit>();
 			if (population < manager.maxPopulation) {
 				if (CanPlace (purchaseUnit,focusPoint) && nearestFortress) {
-					if (manager.IsInsideBattlefield (focusPoint) && Vector3.Distance (focusPoint,nearestFortress.position) < map.fRange) {
+					if (manager.IsInsideBattlefield (focusPoint) && depth < maxFactoryPlacementX[teamIndex] + manager.map.fRange) {
 						int cost = purchaseUnit.cost;
 						if (manager.credits[id] >= cost) {
 							manager.credits[id] -= cost;

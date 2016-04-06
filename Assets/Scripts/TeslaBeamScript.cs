@@ -29,7 +29,7 @@ public class TeslaBeamScript : MonoBehaviour {
 			line.SetVertexCount(sections+1);
 			line.SetWidth(width,width);
 			UpdateLines ();
-			bullet.Hit (bullet.target.collider,end,transform.rotation);
+			bullet.Hit (bullet.target.GetComponent<Collider>(),end,transform.rotation);
 		}else{
 			Destroy (gameObject);
 		}

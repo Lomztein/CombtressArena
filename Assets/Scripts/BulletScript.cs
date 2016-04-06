@@ -25,6 +25,9 @@ public class BulletScript : MonoBehaviour {
 	SpriteRenderer sprite;
 	HealthScript healthScript;
 
+    public float particleDieTime = 1f;
+    public GameObject particle;
+
 	void Start () {
 		sprite = transform.FindChild ("Sprite").GetComponent<SpriteRenderer>();
 		if (modifySize) {
@@ -55,6 +58,7 @@ public class BulletScript : MonoBehaviour {
 				Hit(hit.collider,hit.point,transform.rotation);
 			}
 		}
+        particle = GetComponentInChildren<ParticleSystem> ().gameObject;
 	}
 
 	void FixedUpdate () {
@@ -112,5 +116,10 @@ public class BulletScript : MonoBehaviour {
 			}
 			healthScript.lastHit = parentChar;
 		}
+        if (particle) {
+            particle.transform.parent = null;
+            particle.GetComponent<ParticleSystem> ().Stop ();
+            Destroy (particle, particleDieTime);
+        }
 	}
 }

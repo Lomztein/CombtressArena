@@ -136,7 +136,7 @@ public class SkirmishMenuScript : MonoBehaviour {
 
 	void StartGame () {
 		Network.RemoveRPCsInGroup (0);
-		networkView.RPC ("LoadLevel",RPCMode.AllBuffered,"ca_play_01");
+		GetComponent<NetworkView>().RPC ("LoadLevel",RPCMode.AllBuffered,"ca_play_01");
 	}
 
 	[RPC] void RequestPosition (string newName,NetworkViewID id, NetworkMessageInfo info) {
@@ -238,8 +238,8 @@ public class SkirmishMenuScript : MonoBehaviour {
 					if (typeMenuOpen == false) {
 						if (localPlayer.id != i && occupied[i] == false) {
 							if (GUI.Button (new Rect(slotLength+slotsDistanceFromSide,slotsDistanceFromTop+slotsPosOffset + ((i+j)*(slotSize+slotDistance)),slotLength/4,slotSize),new GUIContent("TAKE","SWAP SLOTS WITH THIS DUDE"))) {
-								networkView.RPC ("ChangePosition",RPCMode.All,localPlayer.networkView.viewID,localPlayer.id,i);
-								networkView.RPC ("ChangeName",RPCMode.All,localPlayer.playerName,i);
+								GetComponent<NetworkView>().RPC ("ChangePosition",RPCMode.All,localPlayer.GetComponent<NetworkView>().viewID,localPlayer.id,i);
+								GetComponent<NetworkView>().RPC ("ChangeName",RPCMode.All,localPlayer.playerName,i);
 							}
 							if (Network.isServer) {
 								if (GUI.Button (new Rect(slotLength+slotsDistanceFromSide+slotLength/4,slotsDistanceFromTop+slotsPosOffset + ((i+j)*(slotSize+slotDistance)),slotLength/4,slotSize),new GUIContent("TYPE","CHANGE THE TYPE OF BOT THIS DUDE IS"))) {
@@ -251,11 +251,11 @@ public class SkirmishMenuScript : MonoBehaviour {
 						}else{
 							if (localPlayer.id == i) {
 								if (GUI.Button (new Rect(slotLength+slotsDistanceFromSide,slotsDistanceFromTop+slotsPosOffset + ((i+j)*(slotSize+slotDistance)),slotLength/4,slotSize),new GUIContent("LEAVE","LEAVE THIS SLOT AND BECOME AN AWESOME GHOST SPECTATOR"))) {
-									networkView.RPC ("RemovePlayer",RPCMode.All,localPlayer.networkView.viewID);
+									GetComponent<NetworkView>().RPC ("RemovePlayer",RPCMode.All,localPlayer.GetComponent<NetworkView>().viewID);
 								}
 								localPlayer.playerName = GUI.TextField (new Rect(slotLength+slotsDistanceFromSide+slotLength/4,slotsDistanceFromTop+slotsPosOffset + ((i+j)*(slotSize+slotDistance)),slotLength/4,slotSize),localPlayer.playerName.ToUpper());
 								if (GUI.changed) { 
-									networkView.RPC ("ChangeName",RPCMode.All,localPlayer.playerName,localPlayer.id);
+									GetComponent<NetworkView>().RPC ("ChangeName",RPCMode.All,localPlayer.playerName,localPlayer.id);
 								}
 							}
 						}
@@ -264,7 +264,7 @@ public class SkirmishMenuScript : MonoBehaviour {
 				if (typeMenuOpen) {
 					for (int i=0;i<botTypes.Length;i++) {
 						if (GUI.Button (new Rect(slotLength+slotsDistanceFromSide,slotsDistanceFromTop + ((i)*(slotSize+slotDistance)),slotLength/2,slotSize),new GUIContent(botTypes[i].ToUpper(),botTypeDescriptions[i].ToUpper()))) {
-							networkView.RPC ("ChangeBotType",RPCMode.All,selectedIndex,botTypes[i]);
+							GetComponent<NetworkView>().RPC ("ChangeBotType",RPCMode.All,selectedIndex,botTypes[i]);
 							typeMenuOpen = false;
 						}
 					}
@@ -307,7 +307,7 @@ public class SkirmishMenuScript : MonoBehaviour {
 			if (Network.isServer) {
 				if (GUI.Button (new Rect(Screen.width-Screen.width/4+20,Screen.height-90,Screen.width/4-30,40),new GUIContent("RANDOMIZE BOTS","RANDOMIZE EVERY SINGLE BOT, JUST FOR A BIT OF VARIANCE, EH?"))) {
 					for (int a=0;a<players;a++) {
-						networkView.RPC ("ChangeBotType",RPCMode.All,a,botTypes[Random.Range (0,botTypes.Length)]);
+						GetComponent<NetworkView>().RPC ("ChangeBotType",RPCMode.All,a,botTypes[Random.Range (0,botTypes.Length)]);
 					}
 				}
 			}

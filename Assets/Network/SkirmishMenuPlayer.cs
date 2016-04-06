@@ -21,9 +21,9 @@ public class SkirmishMenuPlayer : MonoBehaviour {
 	}
 
 	void Start () {
-		if (networkView.isMine) {
-			SkirmishMenuScript.current.networkView.RPC ("RequestPosition",RPCMode.Server,playerName,networkView.viewID);
-			SkirmishMenuScript.current.networkView.RPC ("RequestPlayerData",RPCMode.Server,networkView.viewID);
+		if (GetComponent<NetworkView>().isMine) {
+			SkirmishMenuScript.current.GetComponent<NetworkView>().RPC ("RequestPosition",RPCMode.Server,playerName,GetComponent<NetworkView>().viewID);
+			SkirmishMenuScript.current.GetComponent<NetworkView>().RPC ("RequestPlayerData",RPCMode.Server,GetComponent<NetworkView>().viewID);
 		}
 		Debug.Log ("Player spawned!");
 	}

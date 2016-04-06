@@ -20,10 +20,12 @@ public class MapManager : MonoBehaviour {
 	public GameObject[] fortresses;
 
 	public GlobalManager manager;
+    public static MapManager cur;
 
 	// Use this for initialization
 	void Start () {
 		manager = GetComponent<GlobalManager>();
+        cur = this;
 	}
 
 	public void GenerateMap () {
@@ -42,9 +44,15 @@ public class MapManager : MonoBehaviour {
 			GameObject nf = (GameObject)Instantiate(fortress,newPos,Quaternion.identity);
 			fortresses[i] = nf;
 			Unit newU = nf.GetComponent<Unit>();
+            ProducingStructure.InitPlacementNodesList ();
+            ProducingStructure.placementNodes[newTeam].Add (newU);
 			newU.teamIndex = newTeam;
 		}
-		if (startWithTurrets) {
+
+        ProducingStructure.SetFurthestFactory (0);
+        ProducingStructure.SetFurthestFactory (1);
+
+        if (startWithTurrets) {
 			float turretOffsetY = ((float)turretAmount-1) * tDistance;
 			for (int i=0;i<turretAmount*2;i++) {
 				Vector3 newPos = Vector3.zero;

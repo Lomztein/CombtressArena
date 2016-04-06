@@ -19,7 +19,7 @@ public class CameraScript : MonoBehaviour {
 	void Start () {
 		hudCam = GameObject.Find ("HudCamera");
 		map = GameObject.FindGameObjectWithTag("Stats").GetComponent<MapManager>();
-		standardSize = camera.orthographicSize;
+		standardSize = GetComponent<Camera>().orthographicSize;
 		maxCamSize = Mathf.Max (map.mapWidth,map.mapHeight);
 		if (map.mapWidth > map.mapHeight) {
 			maxCamSize /= Camera.main.aspect;
@@ -29,7 +29,7 @@ public class CameraScript : MonoBehaviour {
 
 		Vector3 movement = Vector3.zero;
 		Vector3 mp = Input.mousePosition;
-		pointer.position = hudCam.camera.ScreenToWorldPoint(mp+Vector3.forward*5);
+		pointer.position = hudCam.GetComponent<Camera>().ScreenToWorldPoint(mp+Vector3.forward*5);
 		float zoom = Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
 		if (mp.x < 10) {
 			movement += Vector3.left * moveSpeed;
@@ -71,8 +71,8 @@ public class CameraScript : MonoBehaviour {
 			Camera.main.orthographicSize = minCamSize;
 			zoom = 0;
 		}
-		Camera.main.orthographicSize -= zoom * Time.deltaTime * camera.orthographicSize/standardSize;
-		Camera.main.transform.position += movement * Time.deltaTime * camera.orthographicSize/standardSize;
+		Camera.main.orthographicSize -= zoom * Time.deltaTime * GetComponent<Camera>().orthographicSize/standardSize;
+		Camera.main.transform.position += movement * Time.deltaTime * GetComponent<Camera>().orthographicSize/standardSize;
 		if (follow) {
 			transform.position = new Vector3(follow.position.x,follow.position.y,transform.position.z);
 		}

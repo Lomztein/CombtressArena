@@ -29,9 +29,15 @@ public class TargetFinder : MonoBehaviour {
 				}
 			}
 		}
-		if (unit.distanceToTarget >= unit.weaponRange && unit.targetOverride == null) {
-			FindTarget (unit.weaponScript.bulletType.GetComponent<BulletScript>().damageType);
-		}
+
+        if (unit.isMobile) {
+            if (unit.distanceToTarget >= unit.weaponRange * 1.2f && unit.targetOverride == null) {
+                FindTarget (unit.weaponScript.bulletType.GetComponent<BulletScript> ().damageType);
+            }
+        } else if (unit.distanceToTarget >= unit.weaponRange && unit.targetOverride == null) {
+            FindTarget (unit.weaponScript.bulletType.GetComponent<BulletScript> ().damageType);
+        }
+
 		if (unit.targetUnit) {
 			if (unit.targetUnit.tag != "Fortress") {
 				if (unit.targetUnit.height >= maxHeight || unit.targetUnit.height <= minHeight) {
@@ -44,8 +50,13 @@ public class TargetFinder : MonoBehaviour {
 	}
 
 	public void FindTarget (string type) {
-		Collider[] near = Physics.OverlapSphere(transform.position,unit.weaponRange,unit.enemyLayer);
-		GameObject closest = null;
+        Collider[] near = null;
+        if (unit.isMobile) {
+            near = Physics.OverlapSphere (transform.position, unit.weaponRange * 1.2f, unit.enemyLayer);
+        } else {
+            near = Physics.OverlapSphere (transform.position, unit.weaponRange, unit.enemyLayer);
+        }
+        GameObject closest = null;
 		GameObject closestSpecific = null;
 		float shortest = float.MaxValue;
 		if (near.Length > 0) {
