@@ -224,19 +224,23 @@ public class SkirmishMenuScript : MonoBehaviour {
 							locName = names[i].ToUpper () + " - " + types[i].ToUpper () + " - " + "BOT";
 						}
 					}
-					if (i == 0) {
-						GUI.Box (new Rect(slotsDistanceFromSide,slotsDistanceFromTop+slotsPosOffset + ((i+j)*(slotSize+slotDistance)),slotLength,slotSize),"TEAM 1" + " - " + teamNames[0].ToUpper ());
-						teamNames[0] = GUI.TextField (new Rect(slotLength+slotsDistanceFromSide,slotsDistanceFromTop+slotsPosOffset + ((i+j)*(slotSize+slotDistance)),slotLength/2,slotSize),teamNames[0].ToUpper ());
-						j++;
-					}
-					if (i == players/2) {
-						GUI.Box (new Rect(slotsDistanceFromSide,slotsDistanceFromTop+slotsPosOffset + ((i+j)*(slotSize+slotDistance)),slotLength,slotSize),"TEAM 2" + " - " + teamNames[1].ToUpper());
-						teamNames[1] = GUI.TextField (new Rect(slotLength+slotsDistanceFromSide,slotsDistanceFromTop+slotsPosOffset + ((i+j)*(slotSize+slotDistance)),slotLength/2,slotSize),teamNames[1].ToUpper());
-						j++;
-					}
-					GUI.Box(new Rect(slotsDistanceFromSide,slotsDistanceFromTop+slotsPosOffset + ((i+j)*(slotSize+slotDistance)),slotLength,slotSize),(i+1).ToString () + " -- " + locName,skin.customStyles[1]);
-					if (typeMenuOpen == false) {
-						if (localPlayer.id != i && occupied[i] == false) {
+
+                        if (i == 0) {
+                            GUI.Box (new Rect (slotsDistanceFromSide, slotsDistanceFromTop + slotsPosOffset + ((i + j) * (slotSize + slotDistance)), slotLength, slotSize), "TEAM 1" + " - " + teamNames [ 0 ].ToUpper ());
+                            if (!typeMenuOpen)
+                                teamNames [ 0 ] = GUI.TextField (new Rect (slotLength + slotsDistanceFromSide, slotsDistanceFromTop + slotsPosOffset + ((i + j) * (slotSize + slotDistance)), slotLength / 2, slotSize), teamNames [ 0 ].ToUpper ());
+                            j++;
+                        }
+                        if (i == players / 2) {
+                            GUI.Box (new Rect (slotsDistanceFromSide, slotsDistanceFromTop + slotsPosOffset + ((i + j) * (slotSize + slotDistance)), slotLength, slotSize), "TEAM 2" + " - " + teamNames [ 1 ].ToUpper ());
+                            if (!typeMenuOpen)
+                                teamNames [ 1 ] = GUI.TextField (new Rect (slotLength + slotsDistanceFromSide, slotsDistanceFromTop + slotsPosOffset + ((i + j) * (slotSize + slotDistance)), slotLength / 2, slotSize), teamNames [ 1 ].ToUpper ());
+                            j++;
+                        }
+
+                    GUI.Box (new Rect (slotsDistanceFromSide, slotsDistanceFromTop + slotsPosOffset + ((i + j) * (slotSize + slotDistance)), slotLength, slotSize), (i + 1).ToString () + " -- " + locName, skin.customStyles [ 1 ]);
+                    if (typeMenuOpen == false) { // I hate the old GUI system.
+                        if (localPlayer.id != i && occupied[i] == false) {
 							if (GUI.Button (new Rect(slotLength+slotsDistanceFromSide,slotsDistanceFromTop+slotsPosOffset + ((i+j)*(slotSize+slotDistance)),slotLength/4,slotSize),new GUIContent("TAKE","SWAP SLOTS WITH THIS DUDE"))) {
 								GetComponent<NetworkView>().RPC ("ChangePosition",RPCMode.All,localPlayer.GetComponent<NetworkView>().viewID,localPlayer.id,i);
 								GetComponent<NetworkView>().RPC ("ChangeName",RPCMode.All,localPlayer.playerName,i);
@@ -325,7 +329,7 @@ public class SkirmishMenuScript : MonoBehaviour {
 			}
 
 			ds.players = players;
-			//ds.localID = localID;
+			ds.localID = localPlayer.id;
 			ds.localName = localPlayer.playerName;
 			ds.teamNames = teamNames;
 			ds.fortressNumber = fortressNumber;

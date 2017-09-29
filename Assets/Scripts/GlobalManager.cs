@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
+using System.Collections.Generic;
 
 public class GlobalManager : MonoBehaviour {
 
@@ -93,6 +95,14 @@ public class GlobalManager : MonoBehaviour {
 
 	DataCarrierScript ds;
 
+    public static GlobalManager manager;
+
+    void Awake() {
+        manager = this;
+        BotInput.allBalanceItems = new Dictionary<int, List<IBalanceItem>> ();
+        BotInput.allBalanceItems.Add (0, new List<IBalanceItem> ());
+        BotInput.allBalanceItems.Add (1, new List<IBalanceItem> ());
+    }
 	// Use this for initialization
 	void Start () {
 
@@ -101,8 +111,9 @@ public class GlobalManager : MonoBehaviour {
 		GameObject dc = GameObject.Find ("DataCarrier");
 		if (dc) {
 			ds = dc.GetComponent<DataCarrierScript>();
-		}
-		GetCarrierData();
+            localID = ds.localID;
+        }
+        GetCarrierData ();
 		map.GenerateMap();
 		credits = new int[players];
 		populations = new int[players];
@@ -138,9 +149,9 @@ public class GlobalManager : MonoBehaviour {
 
 		purchaseUnits = new Unit[purchaseables.Length];
 		ArrangeUnits();
-	}
+    }
 
-	void GetCarrierData () {
+    void GetCarrierData () {
 		if (ds) {
 			players = ds.players;
 			localID = ds.localID;
@@ -245,11 +256,11 @@ public class GlobalManager : MonoBehaviour {
 				TurretController tur = purchaseUnits[i].GetComponent<TurretController>();
 				if (tur) {
 					turrets[tIndex] = purchaseables[i];
-					turButtons[tIndex] = turrets[tIndex].GetComponent<Unit>().newWeapon.transform.FindChild("Sprite").GetComponent<SpriteRenderer>().sprite.texture;
+					turButtons[tIndex] = turrets[tIndex].GetComponent<Unit>().newWeapon.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite.texture;
 					tIndex++;
 				}else{
 					structures[sIndex] = purchaseables[i];
-					strButtons[sIndex] = structures[sIndex].transform.FindChild ("Sprite").GetComponent<SpriteRenderer>().sprite.texture;
+					strButtons[sIndex] = structures[sIndex].transform.Find ("Sprite").GetComponent<SpriteRenderer>().sprite.texture;
 					sIndex++;
 				}
 			}
@@ -260,9 +271,9 @@ public class GlobalManager : MonoBehaviour {
 
 	Texture2D CombineVehicleTextures (GameObject vehicle) {
 		Unit locUnit = vehicle.GetComponent<Unit>();
-		SpriteRenderer uSprite = locUnit.transform.FindChild ("Sprite").GetComponent<SpriteRenderer>();
+		SpriteRenderer uSprite = locUnit.transform.Find ("Sprite").GetComponent<SpriteRenderer>();
 		SpriteRenderer wSprite = null;
-		Transform wSpriteGO = locUnit.newWeapon.transform.FindChild ("Sprite");
+		Transform wSpriteGO = locUnit.newWeapon.transform.Find ("Sprite");
 		if (wSpriteGO) {
 			wSprite = wSpriteGO.GetComponent<SpriteRenderer>();
 		}else{
@@ -371,16 +382,16 @@ public class GlobalManager : MonoBehaviour {
 					selectedUnitSprite = newObject.transform;
 					SpriteRenderer locSprite = selectedUnitSprite.GetComponent<SpriteRenderer>();
 					if (locUnit.unitType != "structure") {
-						Sprite newSprite = factory.transform.FindChild ("Sprite").GetComponent<SpriteRenderer>().sprite;
+						Sprite newSprite = factory.transform.Find ("Sprite").GetComponent<SpriteRenderer>().sprite;
 						locSprite.sprite = newSprite;
 						locSprite.transform.localScale = new Vector3 (0.5f,0.5f,1);
 					}else{
 						Sprite newSprite = null;
 						if (locUnit.newWeapon) {
 							Transform locWeapon = locUnit.newWeapon.transform;
-							newSprite = locWeapon.FindChild("Sprite").GetComponent<SpriteRenderer>().sprite;
+							newSprite = locWeapon.Find("Sprite").GetComponent<SpriteRenderer>().sprite;
 						}else{
-							newSprite = localPlayer.selectedPurchaseOption.transform.FindChild ("Sprite").GetComponent<SpriteRenderer>().sprite;
+							newSprite = localPlayer.selectedPurchaseOption.transform.Find ("Sprite").GetComponent<SpriteRenderer>().sprite;
 						}
 						locSprite.sprite = newSprite;
 					}
@@ -388,7 +399,7 @@ public class GlobalManager : MonoBehaviour {
 					SpriteRenderer locSprite = selectedUnitSprite.GetComponent<SpriteRenderer>();
 					Color newColor = Color.green;
 					selectedUnitSprite.position = new Vector3 (mousePos.x,mousePos.y,0);
-					if (localPlayer.CanPlace(locUnit,mousePos) == false ) {
+					if (localPlayer.CanPlace(mousePos) == false ) {
 						newColor = Color.red;
 					}
 					if (IsInsideBattlefield (mousePos) == false) {
@@ -543,7 +554,7 @@ public class GlobalManager : MonoBehaviour {
 							}
 								weaponInfo = weaponInfo +"\n\nDAMAGE: "+locSelWep.damage*locSelUnit.bDamage+" * "+locSelWep.amount
 								+"\nFIRERATE: "+(1/((Mathf.Max (1,locSelWep.transform.childCount))*(locSelWep.reloadTime*locSelUnit.bFirerate))).ToString ()+" / SEC"
-									+"\nDPS: "+(locSelWep.damage*locSelWep.amount)/((Mathf.Max (1,locSelWep.transform.childCount))*(locSelWep.reloadTime*locSelUnit.bFirerate))
+									+"\nDPS: "+(locSelWep.GetDPS ())
 									+"\nRANGE: "+locSelWep.range*locSelUnit.bRange+"\n"
 									+"\nHULL: "+locSelHel.health+" / "+locSelHel.maxHealth;
 							if (mouseFocUnit == null) {
@@ -594,10 +605,10 @@ public class GlobalManager : MonoBehaviour {
 			}
 			for (int i=0;i<players;i++) {
 				if (i==0) {
-					GUI.Label (new Rect(10,i*20,Screen.width,20),"Team 1");
+					GUI.Label (new Rect(10,i*20,Screen.width,20),"Team 1 - " + BotInput.FormatTeamBalance (0));
 				}
 				if (i==players/2) {
-					GUI.Label (new Rect(10,(i+1)*20,Screen.width,20),"Team 2");
+					GUI.Label (new Rect(10,(i+1)*20,Screen.width,20), "Team 2 - " + BotInput.FormatTeamBalance (1));
 				}
 				if (i<players/2) {
 					GUI.Label (new Rect(10,(i+1)*20,Screen.width,20),playerControllers[i].playerName + ", CREDITS: " + credits[i].ToString () + ", STRUCTURES: " + populations[i].ToString() + "/" + maxPopulation.ToString());

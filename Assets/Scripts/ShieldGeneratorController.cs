@@ -37,6 +37,6 @@ public class ShieldGeneratorController : MonoBehaviour {
 		shieldHealth.regenSpeed *= unit.bFirerate;
 		activeShield.layer = unit.gameObject.layer;
 		activeShield.tag = "Shield";
-		activeShield.transform.position += Vector3.back;
+		activeShield.transform.position += Vector3.back * 2f;
 	}
 }

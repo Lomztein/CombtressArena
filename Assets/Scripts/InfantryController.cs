@@ -2,7 +2,7 @@
 using System.Collections;
 [RequireComponent(typeof(Unit))]
 
-public class InfantryController : MonoBehaviour {
+public class InfantryController : MonoBehaviour, IUnitController {
 
 	public Vector3 targetPos;
 	public Vector3 velocity;
@@ -14,8 +14,12 @@ public class InfantryController : MonoBehaviour {
 	public TargetFinder tf;
 	public Texture2D purchaseTexture;
 
-	// Use this for initialization
-	void Start () {
+    public float GetSpeed() {
+        return maxSpeed;
+    }
+
+    // Use this for initialization
+    void Start () {
 		pointer = new GameObject("Pointer").transform;
 		pointer.transform.position = transform.position;
 		pointer.transform.parent = transform;

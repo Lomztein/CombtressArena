@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 public class PlayerController : MonoBehaviour {
 
@@ -49,7 +50,6 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public void UpdateSelectedUnits () {
-		Debug.Log("Updating selected units");
 		GameObject[] sprs = GameObject.FindGameObjectsWithTag("SelectorSprite");
 		selectedUnits = new Unit[sprs.Length];
 		selectedSprites = new Texture2D[sprs.Length];
@@ -66,10 +66,10 @@ public class PlayerController : MonoBehaviour {
 		}
 		if (u.unitType == "structure") {
 			if (u.newWeapon) {
-				return u.newWeapon.transform.FindChild ("Sprite").GetComponent<SpriteRenderer>().sprite.texture;
+				return u.newWeapon.transform.Find ("Sprite").GetComponent<SpriteRenderer>().sprite.texture;
 			}
 		}
-		return u.transform.FindChild ("Sprite").GetComponent<SpriteRenderer>().sprite.texture;
+		return u.transform.Find ("Sprite").GetComponent<SpriteRenderer>().sprite.texture;
 	}
 	
 	void FixedUpdate () {
@@ -104,20 +104,13 @@ public class PlayerController : MonoBehaviour {
 		mousePos = new Vector3 (mp.x,mp.y,0);
 	}
 
-	public bool CanPlace (Unit u, Vector3 pos) {
+	public bool CanPlace (Vector3 pos) {
 		Collider[] nearby = Physics.OverlapSphere(pos,1,freindlyLayer);
-		if (nearby.Length > 0) {
-			if (nearby.Length == 1) {
-				if (nearby[0].gameObject.tag == "Shield") {
-					return true;
-				}
-			}else{
-				return false;
-			}
+        if (nearby.Length > 0) {
+            return nearby.All (x => x.tag == "Shield");
 		}else{
 			return true;
 		}
-		return false;
 	}
 
 	// Update is called once per frame
@@ -129,8 +122,8 @@ public class PlayerController : MonoBehaviour {
 		if (selectedPurchaseOption) {
 			Unit purchaseUnit = selectedPurchaseOption.GetComponent<Unit>();
 			if (population < manager.maxPopulation) {
-				if (CanPlace (purchaseUnit,focusPoint) && nearestFortress) {
-					if (manager.IsInsideBattlefield (focusPoint) && depth < maxFactoryPlacementX[teamIndex] + manager.map.fRange) {
+				if (CanPlace (focusPoint) && nearestFortress) {
+					if (manager.IsInsideBattlefield (focusPoint)) {
 						int cost = purchaseUnit.cost;
 						if (manager.credits[id] >= cost) {
 							manager.credits[id] -= cost;

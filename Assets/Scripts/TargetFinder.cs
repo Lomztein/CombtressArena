@@ -95,6 +95,21 @@ public class TargetFinder : MonoBehaviour {
 		}
 	}
 
+    public static Transform FindClosest(Vector3 from, Transform [ ] elements) {
+        float smallestDistance = float.MaxValue;
+        Transform cur = null;
+
+        foreach (Transform trans in elements) {
+            float curDistance = Vector3.Distance (from, trans.position);
+            if (curDistance < smallestDistance) {
+                smallestDistance = curDistance;
+                cur = trans;
+            }
+        }
+
+        return cur;
+    }
+
 	void OnDrawGizmos () {
 		if (unit) {
 			Gizmos.DrawWireSphere(transform.position,unit.weaponRange);

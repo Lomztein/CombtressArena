@@ -12,7 +12,7 @@ public class BlastBulletScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		bullet = GetComponent<BulletScript>();
-		sprite = transform.FindChild ("Sprite").GetComponent<SpriteRenderer>();
+		sprite = transform.Find ("Sprite").GetComponent<SpriteRenderer>();
 		transform.localScale = Vector3.one * startScale;
 		fadeSpeed = 1/bullet.time;
 		bullet.damage *= Time.fixedDeltaTime;

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2015
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CombtressArena.CSharp", "CombtressArena.CSharp.csproj", "{0E2AF59B-3665-1AF0-59C8-CD5524E8F81B}"
+# Visual Studio 2017
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CombtressArena", "CombtressArena.csproj", "{190FE726-3241-C20D-E19E-336CCA97A36B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +9,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0E2AF59B-3665-1AF0-59C8-CD5524E8F81B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0E2AF59B-3665-1AF0-59C8-CD5524E8F81B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0E2AF59B-3665-1AF0-59C8-CD5524E8F81B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0E2AF59B-3665-1AF0-59C8-CD5524E8F81B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{190FE726-3241-C20D-E19E-336CCA97A36B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{190FE726-3241-C20D-E19E-336CCA97A36B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{190FE726-3241-C20D-E19E-336CCA97A36B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{190FE726-3241-C20D-E19E-336CCA97A36B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

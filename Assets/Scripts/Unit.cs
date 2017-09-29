@@ -59,6 +59,7 @@ public class Unit : MonoBehaviour {
 	public SpriteRenderer sprite;
 
 	public Transform selectedSprite;
+    public IUnitController unitController;
 	LineRenderer line;
 
 	// Use this for initialization
@@ -66,14 +67,15 @@ public class Unit : MonoBehaviour {
 		expNeeded = level * level * 25;
 		if (newWeapon && weapon == null) {
 			EquipWeapon ();
-		}
-		transform.position += Vector3.down * height;
+			weaponRange = weaponScript.range * bRange;
+        }
+        transform.position += Vector3.back * height;
 		health = GetComponent<HealthScript>();
 		name = unitName + ", level " + level.ToString();
 		GameObject stats = GameObject.FindGameObjectWithTag("Stats");
 		manager = stats.GetComponent<GlobalManager>();
 		map = stats.GetComponent<MapManager>();
-		Transform sp = transform.FindChild("Sprite");
+		Transform sp = transform.Find("Sprite");
 		if (sp) {
 			sprite = sp.gameObject.GetComponent<SpriteRenderer>();
 			if (unitType == "structure") { sprite.transform.position += Vector3.forward/2; }
@@ -91,6 +93,8 @@ public class Unit : MonoBehaviour {
 		radarDot.transform.parent = transform;
 		radarDot.transform.localScale = Vector3.one * Mathf.Max (1,(sprite.bounds.extents.magnitude)/1.618f);
 		radarDot.tag = "RadarDot";
+
+        UnitManager.OnCreated (teamIndex, gameObject);
 	}
 
 	public void GetLayers () {
@@ -117,7 +121,7 @@ public class Unit : MonoBehaviour {
 				weaponPos.position = transform.position;
 			}
 			Destroy (weapon);
-			weapon = (GameObject)Instantiate(newWeapon,weaponPos.position,transform.rotation);
+			weapon = Instantiate(newWeapon,weaponPos.position,transform.rotation);
 			weapon.transform.parent = transform;
 			weaponScript = weapon.GetComponent<WeaponScript>();
 			weaponScript.parent = this;
@@ -174,8 +178,8 @@ public class Unit : MonoBehaviour {
 		}
 		if (target) {
 			if (targetUnit) { targetVel = targetUnit.velocity; }
-			if (bulletSpeed > 0) {
-				targetPos = CalculateFuturePosition (target.transform.position,targetVel,bulletSpeed);
+			if (bulletSpeed > 0.1f) {
+				targetPos = CalculateFuturePosition (target.transform.position,targetVel, distanceToTarget,bulletSpeed);
 			}else{
 				targetPos = target.transform.position;
 			}
@@ -222,9 +226,10 @@ public class Unit : MonoBehaviour {
 			selectedSprite.localScale = sprite.bounds.extents*1.1f;
 			selectedSprite.rotation = Quaternion.identity;
 		}
-	}
+		transform.position += Vector3.back * (transform.position.z + height);
+    }
 
-	void FixedUpdate () {
+    void FixedUpdate () {
 		velocity = -(prevPos - transform.position)/Time.fixedDeltaTime;
 		prevPos = transform.position;
 	}
@@ -250,8 +255,8 @@ public class Unit : MonoBehaviour {
 		weaponScript.Fire();
 	}
 
-	Vector3 CalculateFuturePosition (Vector3 spos, Vector3 vel, float speed) {
-		float time = distanceToTarget/speed;
+    public static Vector3 CalculateFuturePosition (Vector3 spos, Vector3 vel, float distance, float speed) {
+		float time = distance/speed;
 		return spos + vel * time;
 	}
 
@@ -266,9 +271,10 @@ public class Unit : MonoBehaviour {
 		if (selectedSprite) {
 			DestroySelectionSprite();
 		}
-	}
+        UnitManager.OnDestroyed (teamIndex, gameObject);
+    }
 
-	public void Sell () {
+    public void Sell () {
 		manager.credits[playerIndex] += Mathf.RoundToInt((float)cost*0.75f);
 		Destroy (gameObject);
 	}

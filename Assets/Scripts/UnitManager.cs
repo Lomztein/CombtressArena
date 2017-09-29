@@ -1,19 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class UnitManager : MonoBehaviour {
 
-	public GameObject[] team0;
-	public GameObject[] team1;
+    public static Dictionary<int, List<GameObject>> units = new Dictionary<int, List<GameObject>>();
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		team0 = GameObject.FindGameObjectsWithTag("Team0");	
-		team1 = GameObject.FindGameObjectsWithTag("Team1");	
-	}
+    public static void OnCreated(int team, GameObject unit) {
+        if (!units.ContainsKey (team)) {
+            units.Add (team, new List<GameObject> ());
+        }
+        units [ team ].Add (unit);
+    }
+
+    public static void OnDestroyed(int team, GameObject unit) {
+        units [ team ].Remove (unit);
+    }
+
 }

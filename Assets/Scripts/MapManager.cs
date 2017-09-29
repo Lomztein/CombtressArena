@@ -3,30 +3,62 @@ using System.Collections;
 
 public class MapManager : MonoBehaviour {
 
-	public float mapWidth;
-	public float mapHeight;
-	public int fortressAmount;
-	public float fDistance;
-	public float fDistanceFromEnd;
-	public float fRange;
+    public float mapWidth;
+    public float mapHeight;
+    public int fortressAmount;
+    public float fDistance;
+    public float fDistanceFromEnd;
+    public float fRange;
 
-	public bool startWithTurrets;
-	public GameObject turretType;
-	public int turretAmount;
-	public float tDistance;
-	public float tDistanceFromFortress;
+    public bool startWithTurrets;
+    public GameObject turretType;
+    public int turretAmount;
+    public float tDistance;
+    public float tDistanceFromFortress;
 
-	public GameObject fortress;
-	public GameObject[] fortresses;
+    public GameObject fortress;
+    public GameObject [ ] fortresses;
 
-	public GlobalManager manager;
+    public GlobalManager manager;
     public static MapManager cur;
 
-	// Use this for initialization
-	void Start () {
-		manager = GetComponent<GlobalManager>();
+    // Use this for initialization
+    void Start() {
+        manager = GetComponent<GlobalManager> ();
         cur = this;
-	}
+        InvokeRepeating ("SpawnUnitsLoop", 20, 20);
+    }
+
+    public static bool IsWithinMap(Vector3 pos) {
+        if (pos.x > cur.mapWidth / 2)
+            return false;
+        if (pos.x < -cur.mapWidth / 2)
+            return false;
+
+        if (pos.y > cur.mapHeight / 2)
+            return false;
+        if (pos.y < -cur.mapHeight / 2)
+            return false;
+        return true;
+    }
+
+    public static Vector3 GetPosWithinMap() {
+        return new Vector3 (Random.Range (-cur.mapWidth / 2, cur.mapWidth / 2), Random.Range (-cur.mapHeight / 2, cur.mapHeight / 2));
+    }
+
+    private int [ ] indexes = new int [ 3 ];
+    public void SpawnUnitsLoop() {
+        ProducingStructure.SpawnOfType ("light");
+        if (indexes [ 1 ] == 1)
+            ProducingStructure.SpawnOfType ("medium");
+        if (indexes [ 2 ] == 2)
+            ProducingStructure.SpawnOfType ("heavy");
+
+        for (int i = 0; i < indexes.Length; i++) {
+            indexes[i]++;
+            indexes[i] %= (i + 1);
+        }
+    }
 
 	public void GenerateMap () {
 		float fortressOffsetY = ((float)fortressAmount-1)*fDistance;

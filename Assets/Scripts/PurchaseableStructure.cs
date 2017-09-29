@@ -11,6 +11,6 @@ public class PurchaseButton : MonoBehaviour {
 	public Sprite unitSprite;
 
 	void Start () {
-		unitSprite = unit.transform.FindChild ("Sprite").GetComponent<SpriteRenderer>().sprite;
+		unitSprite = unit.transform.Find ("Sprite").GetComponent<SpriteRenderer>().sprite;
 	}
 }

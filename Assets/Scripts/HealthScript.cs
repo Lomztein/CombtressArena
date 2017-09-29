@@ -46,4 +46,39 @@ public class HealthScript : MonoBehaviour {
 			health += regenSpeed * Time.deltaTime;
 		}
 	}
+
+    public static int TypeToInt(string type) {
+        switch (type) {
+            case "light":
+                return 0;
+
+            case "medium":
+                return 1;
+
+            case "heavy":
+                return 2;
+
+            case "all":
+                return -1;
+
+            default:
+                return -2;
+        }
+        // I wish I'd known of enums when I first wrote this game.
+    }
+
+    public static string IntToType(int type) {
+        switch (type) {
+            case -1:
+                return "all";
+            case 0:
+                return "light";
+            case 1:
+                return "medium";
+            case 2:
+                return "heavy";
+            default:
+                return "";
+        }
+    }
 }

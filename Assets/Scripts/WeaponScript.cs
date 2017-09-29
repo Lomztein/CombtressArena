@@ -30,7 +30,7 @@ public class WeaponScript : MonoBehaviour {
 			muzzles[0].rotation = transform.rotation;
 			muzzles[0].parent = transform;
 		}
-		Transform sprite = transform.FindChild ("Sprite");
+		Transform sprite = transform.Find ("Sprite");
 		if (sprite) {
 			sprite.position += Vector3.back;
 		}
@@ -50,22 +50,29 @@ public class WeaponScript : MonoBehaviour {
 	}
 
 	void FeedBulletData (GameObject bullet) {
+        BulletScript bs = bullet.GetComponent<BulletScript> ();
 		Vector3 force = (muzzles[muzzleIndex].right * bulletSpeed * parent.bBulletSpeed * (Random.Range (90f,110f)/100f));
-		force += (muzzles[muzzleIndex].up * (Random.Range (-inaccuracy,inaccuracy)));
-		BulletScript bs = bullet.GetComponent<BulletScript>();
+        force += (muzzles[muzzleIndex].up * (Random.Range (-inaccuracy,inaccuracy)));
 		if (bs) {
-			bs.velocity = force;
-			bs.damage = damage * parent.bDamage;
-			bs.parentChar = parent;
-			bs.range = range * parent.bRange;
-			bs.layer = parent.enemyLayer;
-			if (parent.target) { bs.target = parent.target.transform; }
-		}
+            bs.velocity = force.sqrMagnitude > 0.1f ? force : muzzles[muzzleIndex].right;
+            bs.damage = damage * parent.bDamage;
+            bs.parentChar = parent;
+            bs.range = range * parent.bRange;
+            bs.layer = parent.enemyLayer;
+            bs.targetPosAtStart = parent.targetPos;
+            if (parent.target) {
+                bs.target = parent.target.transform;
+            }
+        }
 		BombScript bomb = bullet.GetComponent<BombScript>();
 		if (bomb) {
 			bomb.unit = parent;
 		}
 	}
+
+    public float GetDPS() {
+        return damage * amount * Mathf.Max (muzzles.Length, 1f) / reloadTime;
+    }
 
 	public bool Fire () {
 		bool hasFired = false;
@@ -77,7 +84,7 @@ public class WeaponScript : MonoBehaviour {
 					Instantiate(fireParticle,muzzles[muzzleIndex].position + Vector3.back,muzzles[muzzleIndex].rotation);
 				}
 				for (int i=0;i<amount;i++) {
-					bullet = (GameObject)Instantiate(bulletType,muzzles[muzzleIndex].position,muzzles[muzzleIndex].rotation);
+					bullet = Instantiate(bulletType,muzzles[muzzleIndex].position, Quaternion.identity);
 					FeedBulletData (bullet);
 					hasFired = true;
 				}
@@ -96,7 +103,7 @@ public class WeaponScript : MonoBehaviour {
 			Instantiate(fireParticle,muzzles[muzzleIndex].position + Vector3.back,muzzles[muzzleIndex].rotation);
 		}
 		for (int i=0;i<amount;i++) {
-			bullet = (GameObject)Instantiate(bulletType,muzzles[muzzleIndex].position,muzzles[muzzleIndex].rotation);
+			bullet = (GameObject)Instantiate(bulletType,muzzles[muzzleIndex].position, Quaternion.identity);
 			FeedBulletData (bullet);
 		}
 		muzzleIndex++;

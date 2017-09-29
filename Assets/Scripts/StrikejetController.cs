@@ -2,7 +2,7 @@
 using System.Collections;
 [RequireComponent(typeof(Unit))]
 
-public class StrikejetController : MonoBehaviour {
+public class StrikejetController : MonoBehaviour, IUnitController {
 
 	public int rounds;
 	public bool infiniteRounds;
@@ -16,8 +16,12 @@ public class StrikejetController : MonoBehaviour {
 	public float distanceToReturn;
 	public bool returning;
 
-	// Use this for initialization
-	void Start () {
+    public float GetSpeed() {
+        return maxSpeed;
+    }
+
+    // Use this for initialization
+    void Start () {
 		unit = GetComponent<Unit>();
 	}
 	
