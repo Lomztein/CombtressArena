@@ -30,13 +30,9 @@ public class MenuScript : MonoBehaviour {
 			subMenu = 3;
 		}
 		rect = new Rect(20,140,Screen.width/3,30);
-		if (Application.isWebPlayer) {
-			GUI.Box(rect,"QUIT");
-		}else{
-			if (GUI.Button (rect,"QUIT")) {
-				Application.Quit();
-			}
-		}
+        if (GUI.Button (rect, "QUIT")) {
+            Application.Quit ();
+        }
 		if (subMenu == 1) {
 			if (GUI.Button (new Rect(Screen.width/3+40,20,Screen.width/3,30),"SKIRMISH")) {
 				Application.LoadLevel("ca_menu_skirmish");

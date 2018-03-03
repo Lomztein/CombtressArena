@@ -7,6 +7,8 @@ public class TurretController : MonoBehaviour, IUnitController, IBalanceItem {
 	Transform stand;
 	Unit unit;
 
+    private float locIncome;
+
     public float GetDamageValue() {
         return unit.newWeapon.GetComponent<WeaponScript> ().GetDPS ();
     }
@@ -49,13 +51,19 @@ public class TurretController : MonoBehaviour, IUnitController, IBalanceItem {
 		}
 	}
 
-	void Update () {
-		if (unit.target) {
-			if (unit.distanceToTarget < unit.weaponRange) {
-				unit.weaponScript.Fire ();
-			}
-		}
-	}
+    void Update() {
+        if (unit.target) {
+            if (unit.distanceToTarget < unit.weaponRange) {
+                unit.weaponScript.Fire ();
+            }
+        }
+
+        locIncome += (float)unit.income * Time.deltaTime;
+        if (locIncome >= 1 && unit.manager) {
+            unit.manager.credits [ unit.playerIndex ] += 1;
+            locIncome = 0;
+        }
+    }
 
     private void OnDestroy() {
         BotInput.allBalanceItems [ unit.teamIndex ].Remove (this);
